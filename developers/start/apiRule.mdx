@@ -1,0 +1,83 @@
+---
+sidebar_position: 1
+---
+
+# Interface call rules 
+
+* 更新时间：2022-01-16 21:31:02
+
+## 修订记录
+
+| 版本	 | 日期	 | 说明 |
+| :-----| :----  | :---- |
+|2.0.0 |2022/01/14 | 文档初始化|
+|2.0.0 |2022/01/16 | 增加说明|
+
+## 请求说明 
++ <font color="Crimson">开放平台业务接口，目前只支持HTTP POST一种请求方式。</font>
++ <font color="Crimson">指定Body Content-Type为：application/json </font>
++ <font color="Crimson">Post请求时，请勿将请求参数放到Query参数中 。</font>
+
+
+## 参数说明
+开放平台接口参数分为两部分：系统参数和业务参数。
+### 系统参数
+请求所有接口均需要携带的参数，用于开发者身份认证和数据安全校验。系统参数详见公共请求参数。
+
+### 业务参数
+* 查看API列表中具体的参数。
+#### 注意：
+1. <font color="Crimson">对于POST请求，请求参数全部放在Body里，不要把参数放在Query里。</font>
+2. <font color="Crimson">对于POST请求，请求参数全部放在Body里，不要把参数放在Query里。</font>
+3. <font color="Crimson">对于POST请求，请求参数全部放在Body里，不要把参数放在Query里。</font>
+
+
+
+## 响应格式
+* 所有接口响应Content-Type均为：application/json，即响应均为json格式。接口响应有统一的格式：
+### 成功格式
+```json
+{
+  "isSuccess": true,
+  "errCode": "00000003",
+  "errMessage": "Pending",
+  "status": "PENDING",
+  "traceId": "cfef69feec8d25aa",
+  "data": null
+}
+```
+1) 主动扫码支付是异步的，errCode为00000003表示业务请求成功待用户支付，该笔订单显示为"PENDING"状态，用户支付结果可以通过手动查询交易订单获取。
+2) 微信中的被扫支付(MICROPAY)，若用户支付成功，则直接返回状态"SUCCESS"。若遇到网络异常或者用户支付时间过长等，则返回状态为"PENDING"，可以通过查询接口查询交易结果。
+3) 接口请求成功时data字段表示接口响应的业务数据。
+### 失败格式
+```json
+{
+  "isSuccess": false,
+  "errCode": "22070030",
+  "errMessage": "Format error-transType cannot be empty",
+  "status": "FAIL",
+  "traceId": "174d6e0d78675e0c",
+  "data": null
+}
+```
+* errCode定义参见4，<a href = "/docs/Appendix/commErrCode">错误码</a>定义。errMessage字段为错误描述信息。
+* traceId为本次调用产生的流水号，接口调用异常，可以提供此流水号用于排查问题。
+## 交易类型列表
+| 交易类型 | 描述 |
+| :-----| :---- | 
+|PAY |支付交易 | 
+|QUERY |支付交易查询/转账结果查询| 
+|REFUND |退款 | 
+|VOIDS |交易撤销 | 
+|TRANSFER |转账代付 | 
+|DOWNLOAD|下载交易报表|
+
+
+## 常见错误FAQ
+| 问题 | 回复 |
+| :-----| :---- | 
+|请求提醒缺少系统参数。 |检查系统参数是否正确。对于Post请求所有参数都放在Body里！不可以放在Query里。 | 
+
+
+
+

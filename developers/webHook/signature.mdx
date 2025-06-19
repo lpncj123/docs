@@ -1,0 +1,31 @@
+---
+title: 异步通知签名验证
+sidebar_position: 2
+---
+
+# notification signature verification
+* 更新时间：2022-02-24 13:54:02
+
+商户可以按照下述步骤验证应答或者回调的签名。
+
+```
+如果验证商户的请求签名正确，系统会在应答的HTTP头部中包括应答签名。我们建议商户验证应答签名。
+
+同样的，系统会在回调的HTTP头部中包括回调报文的签名。商户必须 验证回调的签名，以确保回调是由本系统发送。
+```
+## 获取应答签名
+
+系统的应答签名通过HTTP头signature传递。（注意，示例因为排版可能存在换行，实际数据应在一行）
+
+对 ```signature的字段```值使用Base64进行解码，得到应答签名。
+
+## 验证签名
+
+很多编程语言的签名验证函数支持对验签名串和签名 进行签名验证。强烈建议商户调用该类函数，使用系统平台公钥对验签名串和签名进行SHA256 with RSA签名验证。
+
+## 测试公钥
+```text
+
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCMUvOOr0b+N8qQRGnZxjthfXLYrVNXFdJwlp1b28UROf+8pfaKpvZ18eQXvEGcvmqzxEidi1nt6j1r7ImLziOacRIZsdioy/w1nYYOMkULnoD+ycmAIaz4XUeXx83be99HYqXdlemer59QVINfG942l128IQsu3Ss0M/84ZJyODQIDAQAB
+
+```  

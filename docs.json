@@ -1,35 +1,48 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "PayHui",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#612FFF",
+    "light": "#8963FF",
+    "dark": "#4923BF"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
-      {
-        "tab": "Guides",
+        {
+        "tab": "Developers",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "开发者指南",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "developers/index",
+              "developers/brief-intro",
+              "developers/config-settings",
+              {
+                "group": "公共参数",
+                "pages": [
+                  "developers/public-body/request",
+                  "developers/public-body/response"
+                ]
+              },
+               "developers/sign-tool"
+
             ]
           },
           {
-            "group": "Essentials",
+            "group": "异步通知",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "developers/webHook/callback",
+              "developers/webHook/signature"
+            ]
+          },
+             {
+            "group": "附录",
+            "pages": [
+              "developers/appendix/commErrCode",
+              "developers/appendix/frontNotify",
+              "developers/appendix/UploadSignRule"
             ]
           }
         ]
@@ -44,12 +57,55 @@
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "收单",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              {
+                "group": "支付",
+                "pages": [
+                  "api-reference/收单/消费",
+                  "api-reference/收单/预授权",
+                  "api-reference/收单/交易查询",
+                  "api-reference/收单/撤销",
+                  "api-reference/收单/转账",
+                  "api-reference/收单/退款",
+                  "api-reference/收单/转账查询"
+                ]
+              },
+              {
+                "group": "其它交易类型",
+                "pages": [
+                  "api-reference/其他交易类型/获取微信openid",
+                  "api-reference/其他交易类型/预授权撤销",
+                  "api-reference/其他交易类型/预授权完成"
+                ]
+              },
+              {
+                "group": "商户管理",
+                "pages": [
+                  "api-reference/商户管理/文件上传",
+                  "api-reference/商户管理/商户注册",
+                  "api-reference/商户管理/查询商户注册状态"
+                ]
+              },
+              {
+                "group": "文件下载",
+                "pages": [
+                  "api-reference/文件下载/文件下载"
+                ]
+              }
+            ]
+          },
+
+           {
+            "group": "WEBHOOKS",
+            "pages": [
+              {
+                "group": "消费通知",
+                "pages": [
+                  "api-reference/通知/消费通知"
+ 
+                ]
+              }
             ]
           }
         ]
@@ -58,19 +114,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
+          "anchor": "Dashboard",
+          "href": "https://global.payallglobal.com",
           "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
         }
       ]
     }
@@ -83,20 +129,23 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@payallglobal.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://global.payallglobal.com"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/payallglobal",
+      "github": "https://github.com/payallglobal",
+      "linkedin": "https://linkedin.com/company/payallglobal"
     }
-  }
+  },
+  "openapi": [
+    "openapi_spec.json"
+  ]
 }

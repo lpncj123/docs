@@ -1,0 +1,71 @@
+---
+sidebar_position: 2
+---
+
+---
+title: 给搜索引擎看的标题；可能和正文标题不一样
+description: 关于此页的简短描述
+image: 在社交媒体卡片中显示的缩略图
+keywords: [描述, 中心的, 关键词]
+---
+# Pre notification interface
+* 更新时间：2023-10-21 19:00:00
+
+系统通过同步跳转到商户商户指定页面
+```
+注意：
+• 当商户系统收到通知进行处理时，先检查对应业务数据的状态。
+• 如果未处理，则再进行处理；如果已处理，则直接返回结果成功。
+• 在对业务数据进行状态检查和处理之前，要采用数据锁进行并发控制，以避免函数重入造成的数据混乱。
+
+特别提醒：
+商户系统对于开启结果通知的内容一定要做签名验证，并校验通知的信息是否与商户侧的信息一致，防止数据泄露导致出现“假通知”，造成资金损失。
+
+```
+## 接口说明
+请求方式：POST
+回调URL：该链接是通过基础下单接口中的请求参数“redirectUrl”来设置的，要求必须为https地址。请确保回调URL是外部可正常访问的，且不能携带后缀参数，否则可能导致商户无法接收到回调通知信息。回调URL示例：“https://pay.weixin.qq.com/wxpay/pay.action”
+
+## 通知规则
+用户支付完成后，会把相关支付结果和用户信息发送给商户，商户需要接收处理该消息。
+
+## 通知报文
+支付结果通知是以POST 方法访问商户设置的通知url，通知的数据以表单格式通过请求传输。通知的数据包括了加密的支付结果详情。
+
+## 回调说明
+回调消息用于接收一些交易消息的通知，如支付，转账等。
+
+## 回调消息格式
+* 回调消息统一都为 HTTP，Post格式的表单请求。
+* 回调消息包含签名，服务商需要对请求消息的签名进行验证，签名机制请参考 异步通知签名验证。
+
+
+## 通知报文格式
+```form
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+    <form id="form" action="https://xx/xx" method="post">
+      <input type="hidden" name="traceId" id="traceId" value="123123456" />
+      <input type="hidden" name="orderAmount" id="orderAmount" value="5.00" />
+      <input type="hidden" name="merchantId" id="merchantId" value="123456789123" />
+      <input type="hidden" name="orderId" id="orderId" value="123456789123" />
+      <input type="hidden" name="signature" id="signature" value="RpP2NvrwDMobWS6pRr4=" />
+      <input type="hidden" name="payMethod" id="payMethod" value="UNIONPAY" />
+      <input type="hidden" name="errCode" id="errCode" value="00000000" />
+      <input type="hidden" name="currency" id="currency" value="HKD" />
+      <input type="hidden" name="merchantOrderId" id="merchantOrderId" value="123456789" />
+      <input type="hidden" name="errMessage" id="errMessage" value="Success" />
+      <input type="hidden" name="status" id="status" value="SUCCESS" />
+    </form>
+  </body>
+</html>
+```
+
+### 签名算法：
+1) 参与签名的字段：除signature字段之外，按照字段属性字母正序排序转成JSON报文参与签名。
+2) 签名算法：本支付系统的签名算法采用SHA256withRSA算法。
+3) 签名规则：请参考对应文档。
+

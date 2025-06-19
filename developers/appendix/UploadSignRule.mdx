@@ -1,0 +1,62 @@
+---
+sidebar_position: 3
+---
+
+# Upload file signature rules
+* 更新时间：2022-12-27 16:16:16
+    
+
+## 简介
+* 开放平台的应用管理体系，使用了公私钥的机制，商户可在开放平台 密钥管理 中设置应用的 接口加签方式 中为自身应用配置 公钥/公钥证书  防止数据篡改，以此来保障商户应用和开放平台交互的安全性。
+
+
+## 名词解释
+1) 公钥：即 应用公钥（public_key），开发者通过工具自行生成的公钥信息。
+2) 私钥：即 应用私钥（private_key），开发者通过工具自行生成的私钥信息。
+3) 开放平台公钥：开发者在开放平台配置 应用公钥 后由开放平台生成，供开发者验证来自开放平台的异步信息签名。
+
+## 签名算法说明
+| 签名算法		 | 标准签名算法	 | 描述 | 
+| :-----| :---- | :---- | 
+|RSA |SHA256WithRSA | 强制要求 RSA 密钥的长度至少为 2048。|
+
+## 功能说明
++ 如果不清楚接口调用方法，请先查看文档 接口调用约定。
+
++ 调用每个接口都需要携带签名，服务端会根据请求参数，对签名进行校验，签名不合法的请求将会被拒绝，目的主要是
+
+  + 服务商侧&开放平台侧校验每次请求参数的数据完整性
+
+  + 服务商侧&开放平台侧验证请求者的身份
+  
+
+## 签名计算
+签名计算可以直接使用下方【请求示例】中的签名计算代码，目前开放平台提供了 Java语言的签名代码。
+如果您使用其他语言，可以参考代码自行实现。
+
+## 签名算法
+1) 参与签名的字段：所有参数值不为空（即值不等于null且trim后值不为空字符串）的参数参加签名，sign字段不参与签名。
+2) 签名串组装：对参数名进行字典排序，排序后用'=' 进行参数名和参数值（trim后的值）的拼接，用'&'进行多个参数之间的拼接，即key1=val2&key2=val2&key3=val3
+。sign值区分大小写，MD5为32位小写字符串。
+3) 签名算法：本支付系统的签名算法采用MD5算法或SHA256withRSA算法。
+4) 签名值需放在请求头Header中。
+
+## 注意 
++ 请求参数中有中文时，中文需要经过 url 编码，但计算签名时不需要
++ 计算 SHA256withRSA 签名时，需要以 utf-8 的编码转换 byte 流，否则可能导致含中文参数的签名计算不正确。
+
+## 请求示例
+````
+POST https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/merchant/open/api/file/upload
+Host: mpgwdev.payallglobal.com
+Content-Type: multipart/form-data;charset=utf-8
+
+charset=utf-8
+&merchantId=202200000001
+&requestTime=20220607125959
+&signType=RSA
+&signature=QxW4Q7LB+pxxIJEaTrgImZ+e6yPf4QVFVAYNXSxP2h9R0BrugR1FOIy3tUxAyCCH/rqD2vqvMC33oNaS6Zp+R06JidcegtR5gq/ZM/XSgD6PTFC05AO0BKLfmo56ypIAEh8n9EIH/XrzbwMlXD2qVkuEn+9k6GPGdWJa7IPzAmw=
+&transType=UPLOAD
+&version=2.0.0
+
+````

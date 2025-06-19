@@ -1,0 +1,19 @@
+---
+sidebar_position: 1
+---
+
+# Public response parameters
+* 更新时间：2022-01-16 21:31:02
+## 开放平台公共响应参数
+| 参数 | 类型 | 名称 | 示例值 | 是否必须 |
+| :-----| :---- | :---- | :---- | :---- |
+|errCode |string | 响应状态码，errCode为00000000表示响应成功，其他状态码表示响应失败。具体系统错误码可以参考系统错误码。| 00000000| 必须|
+|errMessage |string | 错误消息| 参数错误| 必须|
+|traceId |string | 请求消息唯一标识。traceId为本次调用产生的流水号，接口调用异常，可以提供此流水号用于排查问题。| 7457794513993866186| 必须|
+|data |Object | 业务数据，为Json对象，如果请求错误，该字段可能会展示错误的详细信息。| {}| 必须|
+|isSuccess |boolean | 是否成功| true| 必须|
+|status |string | 订单状态(见补充说明)| SUCCESS| 必须|
+
+#### 补充说明
++ status表示订单状态,支付、退款和撤销的订单成功与否以status的值为准。
++ status有四种情况 PENDING、SUCCESS、FAIL、CLOSE,分别表示 处理中、成功、失败、订单关闭。

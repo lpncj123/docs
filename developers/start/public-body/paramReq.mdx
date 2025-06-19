@@ -1,0 +1,14 @@
+---
+sidebar_position: 0
+---
+# Public request parameters
+* 更新时间：2022-01-16 21:31:02
+## 开放平台公共请求参数
+| 参数         | 类型     | 名称                                                                                               | 示例值              | 是否必须 |
+|:-----------|:-------|:-------------------------------------------------------------------------------------------------|:-----------------|:-----|
+| charset    | string | 交互数据的编码【utf-8】                                                                                   | utf-8            | 必须   |
+| version    | string | 接口版本，当前版本为【2.0.0】,目前只能传2.0.0，不能不传                                                                | 2.0.0            | 必须   |
+| transType  | string | 交易类型【PAY、CREDIT_CARD、3D_PREAUTH_VOIDS、3D_PREAUTH_COMPLETION、REFUND、VOIDS、QUERY、TRANSFER、DOWNLOAD、REGISTRATION、FILEUPLOAD、INQUIRYREGISTRATIONSTATUS、AUTHORIZE】 | PAY              | 必须   |
+| signType   | string | 报文签名类型：RSA                                                                                       | RSA              | 必须   |
+| memberId   | string | 机构号                                                                                              | 1000000000001    | 非必须  |
+| merchantId | string | 商户号                                                                                              | 2001000000002036 | 必须   |
