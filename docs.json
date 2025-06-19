@@ -16,17 +16,16 @@
           {
             "group": "开发者指南",
             "pages": [
-              "developers/index",
-              "developers/brief-intro",
-              "developers/config-settings",
+              "developers/start/api",
+              "developers/start/apiRule",
               {
                 "group": "公共参数",
                 "pages": [
-                  "developers/public-body/request",
-                  "developers/public-body/response"
+                  "developers/start/public-body/paramReq",
+                  "developers/start/public-body/paramResp"
                 ]
               },
-               "developers/sign-tool"
+               "developers/start/signRule"
 
             ]
           },
@@ -62,7 +61,7 @@
               {
                 "group": "支付",
                 "pages": [
-                  "api-reference/收单/消费",
+                  "api-reference/收单/pay",
                   "api-reference/收单/预授权",
                   "api-reference/收单/交易查询",
                   "api-reference/收单/撤销",
