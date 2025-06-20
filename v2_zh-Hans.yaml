@@ -684,17 +684,23 @@ components:
                 - ALIPAY_INSTORE
                 - NAVERPAY
                 - TOSSPAY
-                - GrabPay_SG
                 - MAYA
                 - BILLEASE
-                - GrabPay_MY
                 - GoPay
                 - OVO
                 - DOKU
                 - Dragonpay
                 - Konbini
                 - PayEasy
-                - GrabPay_PH
+                - GrabPay
+                - PAYCO
+                - MPAY
+                - PROMPT_PAY
+                - HIPAY
+                - TINABA
+                - KREDIVO_ID
+                - AKULAKU_PAYLATER
+                - KPLUS
               description: 支付渠道
             transTimeout:
               type: string
