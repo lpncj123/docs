@@ -61,21 +61,21 @@
               {
                 "group": "支付",
                 "pages": [
-                  "api-reference/收单/pay",
-                  "api-reference/收单/预授权",
-                  "api-reference/收单/交易查询",
-                  "api-reference/收单/撤销",
-                  "api-reference/收单/转账",
-                  "api-reference/收单/退款",
-                  "api-reference/收单/转账查询"
+                  "api-reference/payment/pay",
+                  "api-reference/payment/auth",
+                  "api-reference/payment/order-query",
+                  "api-reference/payment/voids",
+                  "api-reference/payment/transfer",
+                  "api-reference/payment/refund",
+                  "api-reference/payment/transfer-query"
                 ]
               },
               {
                 "group": "其它交易类型",
                 "pages": [
-                  "api-reference/其他交易类型/获取微信openid",
-                  "api-reference/其他交易类型/预授权撤销",
-                  "api-reference/其他交易类型/预授权完成"
+                  "api-reference/other-trans/openid",
+                  "api-reference/other-trans/auth-void",
+                  "api-reference/other-trans/auth-complete"
                 ]
               },
               {

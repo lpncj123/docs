@@ -64,8 +64,18 @@ sidebar_position: 2
 
 ## 技术方案
 ### 交互流程
+```mermaid
+sequenceDiagram
+    actor 商户
+    商户->>商户: 参数签名组装报文
+    商户->>PayAllGlobal: 发送请求
+    PayAllGlobal->>PayAllGlobal: 验证签名
+    PayAllGlobal->>银行: 发送请求
+    银行-->>PayAllGlobal: 返回
+    PayAllGlobal-->>商户: 返回
 
-<img src="https://xdshare.oss-cn-shanghai.aliyuncs.com/shanzhiasia/mapi-uml/mapi-0.png"></img>
+```
+
 1) 商户在发起请求之前，首先根据接口报文说明进行签名，再向PayAllGlobal发送交易请求。
 2) 商户在收到PayAllGlobal响应或通知后，需要对报文进行验签，保证报文没有被篡改。
       `Note:` 商户与PayAllGlobal所有报文交互，都应遵循上述交互流程。
