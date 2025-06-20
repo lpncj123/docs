@@ -1,0 +1,93 @@
+---
+title: 异步通知接口
+sidebar_position: 1
+---
+
+# notification interface
+* 更新时间：2022-02-23 21:31:02
+
+通知系统通过异步通知接口将用户交易结果消息通知给商户
+
+```
+注意：
+• 同样的通知可能会多次发送给商户系统。商户系统必须能够正确处理重复的通知。 
+• 推荐的做法是，当商户系统收到通知进行处理时，先检查对应业务数据的状态，并判断该通知是否已经处理。
+• 如果未处理，则再进行处理；如果已处理，则直接返回结果成功。
+• 在对业务数据进行状态检查和处理之前，要采用数据锁进行并发控制，以避免函数重入造成的数据混乱。
+• 如果在所有通知频率后没有收到系统侧回调，商户应调用查询订单接口确认订单状态。
+
+特别提醒：
+商户系统对于开启结果通知的内容一定要做签名验证，并校验通知的信息是否与商户侧的信息一致，防止数据泄露导致出现“假通知”，造成资金损失。
+
+```
+## 接口说明
+
+请求方式：POST
+
+回调URL：该链接是通过基础下单接口中的请求参数“notifyUrl”来设置的，要求必须为https地址。请确保回调URL是外部可正常访问的，且不能携带后缀参数，否则可能导致商户无法接收到回调通知信息。回调URL示例：“https://pay.weixin.qq.com/wxpay/pay.action”
+
+
+
+## 通知规则
+用户支付完成后，会把相关支付结果和用户信息发送给商户，商户需要接收处理该消息，并返回应答。
+对后台通知交互时，如果系统收到商户的应答不符合规范或超时，系统认为通知失败，系统会通过一定的策略定期重新发起通知，尽可能提高通知的成功率，但不保证通知最终能成功。（通知频率为<font color="Crimson">1m,4m,10m,15m,60m(总计1小时30分钟)</font>）
++ <font color="Crimson">通知有重试功能,请控制做好订单幂等。</font>
+
+
+
+## 通知报文
+
+支付结果通知是以POST 方法访问商户设置的通知url，通知的数据以JSON 格式通过请求主体（BODY）传输。通知的数据包括了加密的支付结果详情。
+
+## 回调说明
+回调消息用于接收一些交易消息的通知，如支付，转账等。
+## 回调消息格式
+* 回调消息统一都为 HTTP，Post格式，contentType 为“application/json”。
+* 回调消息包含签名，服务商需要对请求消息的签名进行验证，签名机制请参考 异步通知签名验证。
+
+## 通知应答
+
+注意：
+
+
+1) 当商户后台进行应答时，系统支付将记录下应答的报文，只要商户成功收到通知(不管交易结果成功还是失败)，都应严格按照以下格式返回。
+
+```json
+{   
+    "errCode": "00000000",
+    "errMessage": "[成功]()"
+}
+```
+
+2) 若商户因验签失败或者其他原因未成功收到通知，则可按照以下格式进行返回。系统未收到'00000000'返回时，会按照设定的时间间隔不断重试通知，直到达到最大重试次数。
+
+````json
+{
+    "errCode" : "99999999",
+    "errMessage" : "[失败]()"
+}
+````
+
+## 通知报文格式
+```json
+{"data":{"completeTime":"20220810135013","currency":"HKD","merchantId":"1001000000002514","merchantOrderId":"20220810134800","orderAmount":"3.01","orderId":"1557242720127553536","payMethod":"ALIPAY_CN","status":"SUCCESS"},"errCode":"00000000","errMessage":"Success","isSuccess":true,"status":"SUCCESS","traceId":"0933def246872b6d"}
+
+```
+
+## 微信通知报文格式
+```json
+{"data":{"bankType":"WPCN","completeTime":"20240320150059","currency":"CNY","merchantId":"2022000000008454","merchantOrderId":"20240320150006","orderAmount":"1341.60","orderId":"4584348502244357","payMethod":"WEIXIN","status":"SUCCESS"},"errCode":"00000000","errMessage":"Success","isSuccess":true,"status":"SUCCESS","traceId":"3e0485700f2a0cb9"}
+
+```
+
+
+## 请求头格式
+```html
+
+Header中签名
+
+ Content-Type: application/json; charset=utf-8
+
+ signature: Xgvlc3we9HBWuJv/FJd1ysXB7rZWk/wEMxQKzyA4MqInfhxBn0ALpHnagXkEfwtKvCZ+QWbZTJ9Nyi0WAEagTo0GjwQnY0sJO5fF8bGhNvpKTES+Ljd5iirudH8zyPj8u0F25J3ifo8NHLOGzyoTXtLwkOpq6Ul0tgXwJvKUlKE=
+
+```
