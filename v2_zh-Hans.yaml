@@ -13,7 +13,7 @@ info:
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
     name: Apache 2.0
 servers:
-  - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+  - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
     description: 开发环境
   - url: 'https://mpgw.payallglobal.com/mp-gateway/'
     description: 正式生产环境
@@ -60,7 +60,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -86,7 +86,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: Development server
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: Live server
@@ -111,7 +111,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -136,7 +136,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -161,7 +161,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: Development server
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -186,7 +186,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -211,7 +211,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -294,7 +294,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: Development server
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -319,7 +319,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -344,7 +344,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -369,7 +369,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -425,7 +425,7 @@ paths:
                   - errMessage
       security: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -450,7 +450,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -475,7 +475,7 @@ paths:
       security:
         - signature: []
       servers:
-        - url: 'https://mpgwdev.payallglobal.com/mp-gateway/'
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
@@ -684,17 +684,23 @@ components:
                 - ALIPAY_INSTORE
                 - NAVERPAY
                 - TOSSPAY
-                - GrabPay_SG
                 - MAYA
                 - BILLEASE
-                - GrabPay_MY
                 - GoPay
                 - OVO
                 - DOKU
                 - Dragonpay
                 - Konbini
                 - PayEasy
-                - GrabPay_PH
+                - GrabPay
+                - PAYCO
+                - MPAY
+                - PROMPT_PAY
+                - HIPAY
+                - TINABA
+                - KREDIVO_ID
+                - AKULAKU_PAYLATER
+                - KPLUS
               description: 支付渠道
             transTimeout:
               type: string
