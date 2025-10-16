@@ -91,6 +91,14 @@
                 "pages": [
                   "api-reference/文件下载/文件下载"
                 ]
+              },
+              {
+                "group": "付款",
+                "pages": [
+                  "api-reference/付款/申请付款",
+                  "api-reference/付款/付款查询",
+                  "api-reference/付款/付款结果通知"
+                ]
               }
             ]
           },

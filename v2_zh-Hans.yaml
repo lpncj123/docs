@@ -479,6 +479,114 @@ paths:
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
+  /api/mapi/paymentOrderPay:
+    post:
+      tags:
+        - 付款
+      summary: 申请付款
+      operationId: post-api-mapi-paymentOrderPay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentOrderPayRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentOrderPayResponse'
+              examples:
+                success:
+                  summary: 成功示例
+                  value:
+                    msg: "Success."
+                    code: "APPLY_SUCCESS"
+                    data:
+                      tradeNo: "20220429052556PO71330000270184"
+                      outTradeNo: "ORDER123456"
+                      status: "PENDING"
+                error1:
+                  summary: 异常示例
+                  value:
+                    msg: "The payment account info format is incorrect."
+                    code: "PARAMS_INVALID"
+                error2:
+                  summary: 异常示例2
+                  value:
+                    msg: "The targetOrg is incorrect."
+                    code: "PARAMS_INVALID"
+      security:
+        - signature: []
+      servers:
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
+          description: 开发环境
+        - url: 'https://mpgw.payallglobal.com/mp-gateway/'
+          description: 正式生产环境
+
+  /api/mapi/paymentOrderQry:
+    post:
+      tags:
+        - 付款
+      summary: 付款查询
+      operationId: post-api-mapi-paymentOrderQry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentOrderQryRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentOrderQryResponse'
+      security:
+        - signature: []
+      servers:
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
+          description: 开发环境
+        - url: 'https://mpgw.payallglobal.com/mp-gateway/'
+          description: 正式生产环境
+  
+  /api/mapi/disbursementResultNotify:
+    post:
+      tags:
+        - 付款
+      summary: 付款结果通知
+      operationId: post-api-mapi-disbursementResultNotify
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisbursementResultNotifyRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisbursementResultNotifyResponse'
+              examples:
+                success:
+                  summary: 成功示例
+                  value:
+                    msg: "Success"
+                    code: "SUCCESS"
+                error:
+                  summary: 异常示例
+                  value:
+                    bizCode: "9998"
+                    message: "data is invalid"
+      security:
+        - signature: []
+      servers:
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
+          description: 开发环境
+        - url: 'https://mpgw.payallglobal.com/mp-gateway/'
+          description: 正式生产环境
 webhooks:
   fifth:
     post:
@@ -534,6 +642,7 @@ tags:
   - name: 其他交易类型
   - name: 商户管理
   - name: 文件下载
+  - name: 付款
 components:
   securitySchemes:
     signature:
@@ -2071,6 +2180,689 @@ components:
       required:
         - errCode
         - errMessage
+    PaymentOrderPayRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/PaymentOrderPayData'
+          required:
+            - data
+    PaymentOrderPayData:
+      type: object
+      properties:
+        outTradeNo:
+          type: string
+          description: 商户订单号，唯一标识商户的一笔交易，不能重复，只能包含字母、数字、下划线
+          maxLength: 63
+          example: "orderorder1650532228089613"
+        country:
+          type: string
+          description: 国家代码，大写字母，参见【支持的国家与币种】
+          maxLength: 2
+          example: "ID"
+        chargeOption:
+          type: string
+          description: 费用承担模式，是否必传参照《付款申请模板及填写规范》
+          example: ""
+        clearingRail:
+          type: string
+          description: 枚举值为：SWIFT, SEPA, LOCAL，分别对应签约的SWIFT、SEPA、Local Banks支付方式
+          example: ""
+        userId:
+          type: string
+          description: 商户内部的用户Id，需保证每个ID唯一性
+          maxLength: 64
+          example: "abc123456789"
+        sourceAccount:
+          type: string
+          description: 扣款账户的币种代码，大写字母
+          maxLength: 3
+          example: "USD"
+        destinationCurrency:
+          type: string
+          description: 指定到账币种，参考【支付方式列表】
+          maxLength: 3
+          example: "IDR"
+        trade:
+          $ref: '#/components/schemas/TradeInfo'
+        payeeInfo:
+          $ref: '#/components/schemas/PayeeInfo'
+        payerInfo:
+          $ref: '#/components/schemas/PayerInfo'
+
+        expiryDays:
+          type: string
+          description: 取款码有效天数，当前仅在FawryCash中有效，支持传入1~15整数
+          example: "3"
+        remark:
+          type: string
+          description: 出款附言或备注，允许英文，数字，中划线，空格，点
+          example: "this is remark"
+        reference:
+          type: string
+          description: 透传数据，在付款异步回调通知中原样返回
+          maxLength: 255
+          example: "this is reference"
+        notifyUrl:
+          type: string
+          description: 商户接收付款结果的后台回调地址，以http/https开头
+          maxLength: 255
+          example: "http://example.com/callback/"
+        notifyEmail:
+          type: string
+          description: 收款方通知邮箱，目前只有个别支付方式会发送取款码邮件
+          maxLength: 64
+          example: "example@gmail.com"
+        notifyPhone:
+          type: string
+          description: 收款方通知电话
+          maxLength: 64
+          example: ""
+        purpose:
+          type: string
+          description: 出款目的，枚举值：ISUBIL, EPTOUR, EPTKAG, ISPAYR, ISPAYRA, ISGDDS, ISSCVE, ISSUPP, ISLOGS, INCEN, GAME, SAMENM, PAYCMSN, SAMENMC, AGOPEXP, ADEXP, RFND, SMCNTST, LGTEP, GOODPAY, SINVEST, FINVEST, TAXPAY, LOANPAY, OTHER
+          maxLength: 32
+          example: "GAME"
+      required:
+        - outTradeNo
+        - trade
+        - payeeInfo
+        - country
+    TradeInfo:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 交易金额，按照各国币种支持的小数点位上送
+          maxLength: 12
+          example: "100"
+        currency:
+          type: string
+          description: 交易币种，大写字母
+          maxLength: 3
+          example: "IDR"
+      required:
+        - amount
+        - currency
+      description: 交易信息
+    PayeeInfo:
+      type: object
+      properties:
+        paymentMethodType:
+          type: string
+          description: 支付方式，参考【支付方式列表】
+          maxLength: 64
+          example: "WALLET"
+        targetOrg:
+          type: string
+          description: 目标机构，参考【支付方式列表】
+          maxLength: 64
+          example: "DANA"
+        payeeType:
+          type: string
+          description: 收款方类型（PERSONAL/CORPORATION），默认PERSONAL
+          example: "PERSONAL"
+        accountInfo:
+          $ref: '#/components/schemas/AccountInfo'
+        bankInfo:
+          $ref: '#/components/schemas/BankInfo'
+        name:
+          $ref: '#/components/schemas/NameInfo'
+        document:
+          $ref: '#/components/schemas/DocumentInfo'
+        address:
+          $ref: '#/components/schemas/AddressInfo'
+        payeePhone:
+          type: string
+          description: 收款方移动电话号码
+          maxLength: 64
+          example: "08123456789"
+        birthDate:
+          type: string
+          description: 收款方出生日期，yyyy-MM-dd格式
+          maxLength: 10
+          example: "1996-09-01"
+        email:
+          type: string
+          description: 收款方邮箱
+          maxLength: 64
+          example: "example@gmail.com"
+      required:
+        - paymentMethodType
+        - accountInfo
+      description: 收款方信息
+    AccountInfo:
+      type: object
+      properties:
+        accountNo:
+          type: string
+          description: 收款方账号，根据付款方式不同填入相应账号
+          maxLength: 128
+          example: "0812323233332"
+        accountType:
+          type: string
+          description: 收款账户类型，在不同国家-支付方式下规范不同
+          example: ""
+        checkDigit:
+          type: string
+          description: 收款方账户验证数字
+          example: ""
+      required:
+        - accountNo
+      description: 收款账户信息
+    BankInfo:
+      type: object
+      properties:
+        bankCode:
+          type: string
+          description: 用于识别特定金融机构下的收款方银行代码
+          maxLength: 64
+          example: ""
+        bankName:
+          type: string
+          description: 收款方银行名称
+          maxLength: 255
+          example: ""
+        bankBranch:
+          type: string
+          description: 收款人银行网点号/分行号
+          maxLength: 64
+          example: ""
+        bankCity:
+          type: string
+          description: 收款方银行所在城市
+          maxLength: 255
+          example: ""
+        corAccountNo:
+          type: string
+          description: 收款方银行的代理账号
+          maxLength: 128
+          example: ""
+      description: 收款方银行信息
+    NameInfo:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: 收款方名
+          maxLength: 64
+          example: "James"
+        middleName:
+          type: string
+          description: 收款方中间名，多段中间名时，使用空格进行分隔
+          maxLength: 64
+          example: "Shri Williams"
+        lastName:
+          type: string
+          description: 收款方姓
+          maxLength: 64
+          example: "Kanta"
+        fullName:
+          type: string
+          description: 收款方全名
+          maxLength: 512
+          example: "James Shri Williams Kanta"
+      description: 收款方姓名
+    DocumentInfo:
+      type: object
+      properties:
+        documentType:
+          type: string
+          description: 收款方个人身份证明类型
+          maxLength: 16
+          example: ""
+        documentId:
+          type: string
+          description: 收款方个人识别号码
+          maxLength: 64
+          example: ""
+        documentIssueDate:
+          type: string
+          description: 收款方个人识别号码生效日期，yyyy-MM-dd格式
+          maxLength: 10
+          example: ""
+        documentExpireDate:
+          type: string
+          description: 收款方个人识别号码失效日期，yyyy-MM-dd格式
+          maxLength: 10
+          example: ""
+      description: 收款方个人身份信息
+    AddressInfo:
+      type: object
+      properties:
+        address:
+          type: string
+          description: 收款方地址
+          maxLength: 512
+          example: ""
+        city:
+          type: string
+          description: 收款方城市
+          maxLength: 255
+          example: ""
+        state:
+          type: string
+          description: 州
+          maxLength: 255
+          example: ""
+        zipCode:
+          type: string
+          description: 收款方邮编
+          maxLength: 32
+          example: ""
+      description: 收款方地址信息
+    PayerInfo:
+      type: object
+      properties:
+        subMerchantNo:
+          type: string
+          description: 子商户号，子商户在系统中的唯一标识
+          maxLength: 64
+          example: ""
+        businessLegalName:
+          type: string
+          description: 付款公司主体注册名
+          maxLength: 70
+          example: ""
+        registrationCountry:
+          type: string
+          description: 付款公司主体注册国家，2位大写国家编码
+          example: ""
+        merchantCategoryCode:
+          type: string
+          description: 付款公司行业分类，枚举值：DIGITAL_GOODS_MEDIA, DIGITAL_GOODS_APPLICATION, TRAVEL_AGENCIES_AND_TRAVEL_RELATED_SERVICES, COURIER_SERVICES_AIR_AND_GROUND_AND_FREIGHT_FORWARDERS, ADVERTISING_SERVICES, TELECOMMUNICATION_SERVICE, COMPUTER_NETWORKS_AND_INFORMATION_SERVICES, MISCELLANEOUS_GENERAL_MERCHANDISE
+          example: ""
+        payerId:
+          type: string
+          description: 付款公司所属机构/平台商户号
+          maxLength: 70
+          example: ""
+        name:
+          $ref: '#/components/schemas/NameInfo'
+      description: 付款方信息
+    PaymentOrderPayResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 返回码，APPLY_SUCCESS代表成功。只代表接口请求成功，不代表订单状态。
+          example: "APPLY_SUCCESS"
+        msg:
+          type: string
+          description: 返回描述，'Success.'
+          example: "Success."
+        data:
+          $ref: '#/components/schemas/PaymentOrderPayResponseData'
+      required:
+        - data
+        - code
+        - msg
+    PaymentOrderPayResponseData:
+      type: object
+      properties:
+        outTradeNo:
+          type: string
+          description: 商户订单号
+          example: "ORDER123456"
+        tradeNo:
+          type: string
+          description: PayerMax交易流水号
+          example: "20220429052556PO71330000270184"
+        status:
+          type: string
+          description: 交易状态
+          example: "PENDING"
+      required:
+        - outTradeNo
+        - tradeNo
+        - status
+      description: 返回数据体
+
+    PaymentOrderQryRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/PaymentOrderQryData'
+    PaymentOrderQryData:
+      type: object
+      properties:
+        outTradeNo:
+          type: string
+          description: 原商户订单号
+          maxLength: 63
+          example: "outTradeNo16699809174221"
+      required:
+        - outTradeNo
+      description: 请求数据体
+    PaymentOrderQryResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 返回码，APPLY_SUCCESS代表成功。只代表接口请求成功，不代表订单状态。
+          example: "APPLY_SUCCESS"
+        msg:
+          type: string
+          description: 返回描述，'Success.'
+          example: "Success."
+        data:
+          $ref: '#/components/schemas/PaymentOrderQryResponseData'
+      required:
+        - msg
+        - code
+        - data
+    PaymentOrderQryResponseData:
+      type: object
+      properties:
+        outTradeNo:
+          type: string
+          description: 商户订单号
+          maxLength: 64
+          example: "outTradeNo1669980917422"
+        tradeNo:
+          type: string
+          description: PayerMax交易流水号
+          example: "20221202113517PO8822546300427849"
+        status:
+          type: string
+          description: 交易状态，SUCCESS成功, FAILED失败，PENDING进行中，BOUNCEBACK退票
+          maxLength: 32
+          example: "SUCCESS"
+        subStatus:
+          type: string
+          description: 交易子状态，当订单交易状态为PENDING时，PayerMax将提供子状态，展示交易处理进度，具体枚举值请参考：https://docs-v2.payermax.com/doc-center/appendix/disbursement/transaction-status.html
+          example: ""
+        notifyEmail:
+          type: string
+          description: 通知邮箱
+          example: "example@gmail.com"
+        notifyPhone:
+          type: string
+          description: 通知电话
+          example: "79189772406"
+        responseCode:
+          type: string
+          description: 订单失败错误码，详见https://docs.payallglobal.com/developers/appendix/commErrCode
+          example: ""
+        responseMsg:
+          type: string
+          description: 订单失败错误码描述
+          example: ""
+        reference:
+          type: string
+          description: 附加数据，上送的值
+          example: "this is reference"
+        redeemCode:
+          type: string
+          description: 1.FAWRY取款码，2.运营商充值PIN码
+          example: ""
+        expiryTime:
+          type: string
+          description: 订单过期时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          example: ""
+        bounceBackTime:
+          type: string
+          description: 退票时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          example: ""
+        transactionUtcTime:
+          type: string
+          description: 交易创建时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          maxLength: 32
+          example: "2022-12-02T11:35:17 +0000"
+        fundsFreezeTime:
+          type: string
+          description: 资金动账时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          example: "2024-04-17T06:35:09 +0000"
+        fundsReturnTime:
+          type: string
+          description: 资金返还时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          example: "2024-04-18T07:13:01 +0000"
+        payFinishTime:
+          type: string
+          description: 交易完成时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          example: "2022-12-02T11:35:23 +0000"
+        trade:
+          $ref: '#/components/schemas/TradeInfo'
+        source:
+          $ref: '#/components/schemas/SourceInfo'
+        destination:
+          $ref: '#/components/schemas/DestinationInfo'
+        additionalIdentifier:
+          $ref: '#/components/schemas/AdditionalIdentifier'
+      required:
+        - transactionUtcTime
+        - destination
+        - source
+        - trade
+      description: 返回数据体
+    SourceInfo:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 付款方-扣款金额
+          example: "3223.59"
+        currency:
+          type: string
+          description: 付款方-扣款币种
+          example: "PHP"
+        exchangeRate:
+          type: string
+          description: 交易币种转换为扣款币种的汇率
+          example: "1.0000000000"
+        fee:
+          type: string
+          description: 付款方-手续费
+          example: "0.00"
+        feeCurrency:
+          type: string
+          description: 付款方-手续费币种
+          example: "PHP"
+        tax:
+          type: string
+          description: 付款方-税费
+          example: "0.00"
+        taxCurrency:
+          type: string
+          description: 付款方-税费币种
+          example: "PHP"
+      required:
+        - amount
+        - currency
+      description: 付款信息（商户）
+    DestinationInfo:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 收款方到账金额
+          example: "3223.00"
+        currency:
+          type: string
+          description: 收款方到账金额币种
+          example: "PHP"
+        exchangeRate:
+          type: string
+          description: 交易币种转换为到账币种的汇率
+          example: "1.0000000000"
+        fee:
+          type: string
+          description: 收款方-手续费
+          example: "0.59"
+        feeCurrency:
+          type: string
+          description: 收款方-手续费币种
+          example: "PHP"
+        tax:
+          type: string
+          description: 收款方-税费
+          example: "0.00"
+        taxCurrency:
+          type: string
+          description: 收款方-税费币种
+          example: "PHP"
+      required:
+        - amount
+        - currency
+      description: 收款信息（用户）
+    AdditionalIdentifier:
+      type: object
+      properties:
+        referenceId:
+          type: string
+          description: 收款银行/机构的交易单号（依据历史经验，目前仅沙特BankTransfer返回的该单号可以作为凭证跟收款行确认是否到账，交易单号格式如：20240418SAARNBARNB1B44410558522170）
+          example: "2024041710121481030100166528590615003"
+      description: 交易附加信息，出款回调升级到3.0版本以上，才会返回该字段。如有需求，可以联系PayerMax技术支持进行调整
+
+    DisbursementResultNotifyRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            code:
+              type: string
+              description: 回调通知码，APPLY_SUCCESS代表有效回调
+              maxLength: 32
+              example: "APPLY_SUCCESS"
+            msg:
+              type: string
+              description: 回调通知码描述，'Success.'
+              maxLength: 256
+              example: "Success."
+            notifyTime:
+              type: string
+              description: 通知时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+              maxLength: 32
+              example: "2023-03-08T16:22:05 +0000"
+            notifyType:
+              type: string
+              description: 通知类型 PAYOUT
+              maxLength: 16
+              example: "PAYOUT"
+            data:
+              $ref: '#/components/schemas/DisbursementResultNotifyData'
+          required:
+            - code
+            - msg
+            - notifyTime
+            - notifyType
+            - data
+    DisbursementResultNotifyData:
+      type: object
+      properties:
+        outTradeNo:
+          type: string
+          description: 商户订单号
+          minLength: 1
+          maxLength: 64
+          example: "outTradeNo167823423411"
+        tradeNo:
+          type: string
+          description: PayerMax交易流水号
+          maxLength: 64
+          example: "20230308080847PO7777298223436669001"
+        transactionUtcTime:
+          type: string
+          description: 交易创建时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          maxLength: 32
+          example: "2023-03-08T10:22:05 +0000"
+        fundsFreezeTime:
+          type: string
+          description: 资金动账时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          example: "2024-04-17T06:35:09 +0000"
+        fundsReturnTime:
+          type: string
+          description: 资金返还时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          example: "2024-04-18T07:13:01 +0000"
+        payFinishTime:
+          type: string
+          description: 交易完成时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          maxLength: 32
+          example: "2023-03-08T10:23:05 +0000"
+        bounceBackTime:
+          type: string
+          description: 退票时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          maxLength: 32
+          example: ""
+        redeemCode:
+          type: string
+          description: 1.FAWRY取款码，2.运营商充值PIN码
+          maxLength: 32
+          example: "123456"
+        expiryTime:
+          type: string
+          description: 订单过期时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          maxLength: 32
+          example: "2023-03-12 02:37:37"
+        status:
+          type: string
+          description: 交易状态，SUCCESS成功, FAILED失败，PENDING进行中，BOUNCEBACK退票
+          maxLength: 32
+          example: "SUCCESS"
+        subStatus:
+          type: string
+          description: 交易子状态，当订单交易状态为PENDING时，PayerMax将提供子状态，展示交易处理进度，具体枚举值请参考：https://docs.payallglobal.com/developers/start/public-body/paramResp
+          example: ""
+        notifyPhone:
+          type: string
+          description: 收款方通知邮件手机号
+          maxLength: 32
+          example: "18168567713"
+        notifyEmail:
+          type: string
+          description: 收款方通知邮件地址
+          maxLength: 64
+          example: "example@gmail.com"
+        responseCode:
+          type: string
+          description: 订单失败错误码，详见https://docs.payallglobal.com/developers/appendix/commErrCode
+          maxLength: 32
+          example: ""
+        responseMsg:
+          type: string
+          description: 订单失败错误码描述
+          maxLength: 256
+          example: ""
+        reference:
+          type: string
+          description: 附加数据，商户上送的值
+          maxLength: 512
+          example: "Excepteur in non Ut elit"
+        trade:
+          $ref: '#/components/schemas/TradeInfo'
+        source:
+          $ref: '#/components/schemas/SourceInfo'
+        destination:
+          $ref: '#/components/schemas/DestinationInfo'
+        additionalIdentifier:
+          $ref: '#/components/schemas/AdditionalIdentifier'
+      required:
+        - destination
+        - source
+        - trade
+        - transactionUtcTime
+        - outTradeNo
+        - tradeNo
+        - status
+      description: 数据体
+    DisbursementResultNotifyResponse:
+      type: object
+      properties:
+        msg:
+          type: string
+          description: 响应 'Success'（仅代表成功收到通知，不代表订单状态）
+          example: "Success"
+        code:
+          type: string
+          description: 仅可响应 'SUCCESS'（仅代表成功收到通知，不代表订单状态）
+          example: "SUCCESS"
+      required:
+        - msg
+        - code
 security:
   - signature: []
 x-internal: false
