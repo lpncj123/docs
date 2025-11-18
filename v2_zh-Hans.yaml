@@ -2798,7 +2798,7 @@ components:
           example: "ORDER123456"
         tradeNo:
           type: string
-          description: PayerMax交易流水号
+          description: payallglobal交易流水号
           example: "20220429052556PO71330000270184"
         status:
           type: string
@@ -2928,7 +2928,7 @@ components:
           example: "outTradeNo1669980917422"
         tradeNo:
           type: string
-          description: PayerMax交易流水号
+          description: payallglobal交易流水号
           example: "20221202113517PO8822546300427849"
         status:
           type: string
@@ -2937,7 +2937,7 @@ components:
           example: "SUCCESS"
         subStatus:
           type: string
-          description: 交易子状态，当订单交易状态为PENDING时，PayerMax将提供子状态，展示交易处理进度，具体枚举值请参考：https://docs-v2.payermax.com/doc-center/appendix/disbursement/transaction-status.html
+          description: 交易子状态，当订单交易状态为PENDING时，payallglobal将提供子状态，展示交易处理进度，具体枚举值请参考：https://docs-v2.payallglobal.com/doc-center/appendix/disbursement/transaction-status.html
           example: ""
         notifyEmail:
           type: string
@@ -3079,7 +3079,7 @@ components:
           type: string
           description: 收款银行/机构的交易单号（依据历史经验，目前仅沙特BankTransfer返回的该单号可以作为凭证跟收款行确认是否到账，交易单号格式如：20240418SAARNBARNB1B44410558522170）
           example: "2024041710121481030100166528590615003"
-      description: 交易附加信息，出款回调升级到3.0版本以上，才会返回该字段。如有需求，可以联系PayerMax技术支持进行调整
+      description: 交易附加信息，出款回调升级到3.0版本以上，才会返回该字段。如有需求，可以联系payallglobal技术支持进行调整
 
     DisbursementResultNotifyRequest:
       allOf:
@@ -3125,7 +3125,7 @@ components:
           example: "outTradeNo167823423411"
         tradeNo:
           type: string
-          description: PayerMax交易流水号
+          description: payallglobal交易流水号
           maxLength: 64
           example: "20230308080847PO7777298223436669001"
         transactionUtcTime:
@@ -3241,7 +3241,7 @@ components:
               example: "2025-04-05T12:00:00.000+08:00"
             # appId:
             #   type: string
-            #   description: 商户应用Id，PayerMax分配给商户应用的唯一标识
+            #   description: 商户应用Id，payallglobal分配给商户应用的唯一标识
             #   maxLength: 64
             #   example: "127d5de5b5124d11b9132c6ec9cc61d3"
             data:
