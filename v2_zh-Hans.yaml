@@ -479,7 +479,7 @@ paths:
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
-  /api/mapi/paymentOrderPay:
+  /api/mapi/v1/payments/open/api/paymentOrderPay:
     post:
       tags:
         - 付款
@@ -502,11 +502,11 @@ paths:
                   summary: 成功示例
                   value:
                     msg: "Success."
-                    code: "APPLY_SUCCESS"
+                    code: "00000000"
                     data:
                       tradeNo: "20220429052556PO71330000270184"
                       outTradeNo: "ORDER123456"
-                      status: "PENDING"
+                      status: "success"
                 error1:
                   summary: 异常示例
                   value:
@@ -525,7 +525,7 @@ paths:
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
 
-  /api/mapi/paymentOrderQry:
+  /api/mapi/v1/payments/open/api/paymentOrderQry:
     post:
       tags:
         - 付款
@@ -550,36 +550,38 @@ paths:
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
-  
-  /api/mapi/disbursementResultNotify:
+  /currentBalanceQuery:
     post:
+      summary: 实时余额查询
       tags:
-        - 付款
-      summary: 付款结果通知
-      operationId: post-api-mapi-disbursementResultNotify
+        - 多币种资金管理
+      operationId: post-aggregate-pay-api-gateway-currentBalanceQuery
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DisbursementResultNotifyRequest'
+              $ref: '#/components/schemas/CurrentBalanceQueryRequest'
+           
       responses:
         '200':
-          description: OK
+          description: 查询成功
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DisbursementResultNotifyResponse'
-              examples:
-                success:
-                  summary: 成功示例
-                  value:
-                    msg: "Success"
-                    code: "SUCCESS"
-                error:
-                  summary: 异常示例
-                  value:
-                    bizCode: "9998"
-                    message: "data is invalid"
+                $ref: '#/components/schemas/CurrentBalanceQueryResponse'
+              # example:
+              #   msg: ""
+              #   code: APPLY_SUCCESS
+              #   data:
+              #     accountRealTimeTypes:
+              #       - balance: 0.59
+              #         accountType: DISBURSEMENT
+              #         currency: AED
+              #       - balance: 776.34
+              #         accountType: DISBURSEMENT
+              #         currency: USD
+              #       # ... 其他账户
+              #     inquiryTime: "2023-03-30T06:15:22.096Z"
       security:
         - signature: []
       servers:
@@ -587,6 +589,48 @@ paths:
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
+  # /付款结果通知:
+  #   post:
+  #     tags:
+  #       - 付款
+  #     summary: 付款结果通知
+  #     description: |
+  #       *<strong><span style={{ color: 'red'}}>注意：此接口为平台主动推送,商户无需主动调用</span></strong>*
+  #       支付平台会在付款状态变更后，通过POST请求异步通知至您在后台配置的回调地址。
+  #     # operationId: post-api-mapi-disbursementResultNotify
+  #     operationId: post-api-mapi-disbursementResultNotify
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/DisbursementResultNotifyRequest'
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/DisbursementResultNotifyResponse'
+  #             examples:
+  #               success:
+  #                 summary: 成功示例
+  #                 value:
+  #                   msg: "Success"
+  #                   code: "00000000"
+  #               error:
+  #                 summary: 异常示例
+  #                 value:
+  #                   bizCode: "9998"
+  #                   message: "data is invalid"
+  #     security:
+  #       - signature: []
+  #     # servers:
+  #     #   - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
+  #     #     description: 开发环境
+  #     #   - url: 'https://mpgw.payallglobal.com/mp-gateway/'
+  #     #     description: 正式生产环境
+
+  
 webhooks:
   fifth:
     post:
@@ -637,6 +681,42 @@ webhooks:
                 $ref: '#/components/schemas/WebhooksResponse'
       security:
         - signature: []
+  paymentAdvice‌:
+    post:
+      tags:
+        - 付款
+      summary: 付款结果通知
+      description: '当付款成功后，通过开发者webhook配置，开发平台会发送通知给商户，当接受不成功或者发送失败时, 会重发8次, 时间间隔为5s,20s,1m,5m,30m,2h,24h'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentOrderQryResponse'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisbursementResultNotifyResponse'
+              examples:
+                success:
+                  summary: 成功示例
+                  value:
+                    errMessage: "成功"
+                    errCode: "00000000"
+                # error:
+                #   summary: 异常示例
+                #   value:
+                #     errMessage: "失败"
+                #     errCode: "00000000"
+      security:
+        - signature: []
+      # servers:
+      #   - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
+      #     description: 开发环境
+      #   - url: 'https://mpgw.payallglobal.com/mp-gateway/'
+      #     description: 正式生产环境
 tags:
   - name: 收单
   - name: 其他交易类型
@@ -948,6 +1028,68 @@ components:
             - merchantOrderTime
             - merchantRegion
       x-User: null
+    PayBaseRequest:
+      type: object
+      description: 支付查询基础请求对象
+      properties:
+        charset:
+          type: string
+          description: 交互数据的编码【utf-8】
+          default: UTF-8
+          example: "utf-8"
+        # outTradeNo:
+        #   type: string
+        #   description: 商户订单号
+        #   example: "394916B2ADFD4D6CAD6CC624C88990D0"
+        memberId:
+          type: string
+          description: "机构号"
+          example: "2022000000008454"
+        merchantId:
+          type: string
+          description: "商户号"
+          example: "2022000000008454"
+        requestTime:
+          type: string
+          format: date-time
+          description: 请求时间（ISO 8601 格式，带时区）
+          example: "2025-10-24T15:00:00.500+08:00"
+        signType:
+          type: string
+          description: 报文签名类型
+          example: "RSA"
+        transType:
+          type: string
+          description: 交易类型
+          enum:
+            - PAY
+            - CREDIT_CARD
+            - 3D_PREAUTH_VOIDS
+            - 3D_PREAUTH_COMPLETION
+            - REFUND
+            - VOIDS
+            - QUERY
+            - TRANSFER
+            - DOWNLOAD
+            - REGISTRATION
+            - FILEUPLOAD
+            - INQUIRYREGISTRATIONSTATUS
+            - AUTHORIZE
+          example: "PAY"
+        version:
+          type: string
+          description: "接口版本，当前版本为【2.0.0】,目前只能传2.0.0，不能不传"
+          example: "2.0.0"
+      required:
+        - charset
+        - outTradeNo
+        - memberId
+        - merchantId
+        - requestTime
+        - signType
+        - transType
+        - version
+      
     BaseRequest:
       type: object
       properties:
@@ -1001,6 +1143,152 @@ components:
           description: "商户号\t"
           examples:
             - '2023010558663764'
+      required:
+        - charset
+        - version
+        - transType
+        - accessType
+        - signType
+        - memberId
+        - merchantId
+      x-examples:
+        Example 1:
+          charset: UTF-8
+          version: 2.0.0
+          transType: string
+          accessType: PAY
+          signType: RSA
+          memberId: stringstri
+          merchantId: stringstri
+    BalanceBaseRequest:
+      type: object
+      properties:
+        charset:
+          type: string
+          description: 交互数据的编码【utf-8】
+          default: UTF-8
+          examples:
+            - UTF-8
+        version:
+          type: string
+          description: "接口版本，当前版本为【2.0.0】,目前只能传2.0.0，不能不传\t"
+          examples:
+            - 2.0.0
+        transType:
+          type: string
+          enum:
+            - PAY
+            - CREDIT_CARD
+            - 3D_PREAUTH_VOIDS
+            - 3D_PREAUTH_COMPLETION
+            - REFUND
+            - VOIDS
+            - QUERY
+            - TRANSFER
+            - DOWNLOAD
+            - REGISTRATION
+            - FILEUPLOAD
+            - INQUIRYREGISTRATIONSTATUS
+            - AUTHORIZE
+            - BALANCE_QUERY
+          description: 交易类型
+          default: BALANCE_QUERY
+        accessType:
+          type: string
+          description: "接口访问类型\t"
+          default: s2s
+          examples:
+            - s2s
+        signType:
+          type: string
+          description: 报文签名类型
+          examples:
+            - RSA
+        memberId:
+          type: string
+          description: "机构号\t"
+          examples:
+            - '2023010558663764'
+        merchantId:
+          type: string
+          description: "商户号\t"
+          examples:
+            - '2023010558663764'
+      required:
+        - charset
+        - version
+        - transType
+        - accessType
+        - signType
+        - memberId
+        - merchantId
+      x-examples:
+        Example 1:
+          charset: UTF-8
+          version: 2.0.0
+          transType: string
+          accessType: PAY
+          signType: RSA
+          memberId: stringstri
+          merchantId: stringstri
+    PayQryBaseRequest:
+      type: object
+      properties:
+        charset:
+          type: string
+          description: 交互数据的编码【utf-8】
+          default: UTF-8
+          examples:
+            - UTF-8
+        version:
+          type: string
+          description: "接口版本，当前版本为【2.0.0】,目前只能传2.0.0，不能不传\t"
+          examples:
+            - 2.0.0
+        transType:
+          type: string
+          enum:
+            - PAY
+            - CREDIT_CARD
+            - 3D_PREAUTH_VOIDS
+            - 3D_PREAUTH_COMPLETION
+            - REFUND
+            - VOIDS
+            - QUERY
+            - TRANSFER
+            - DOWNLOAD
+            - REGISTRATION
+            - FILEUPLOAD
+            - INQUIRYREGISTRATIONSTATUS
+            - AUTHORIZE
+          description: 交易类型
+          default: QUERY
+        accessType:
+          type: string
+          description: "接口访问类型\t"
+          default: s2s
+          examples:
+            - s2s
+        signType:
+          type: string
+          description: 报文签名类型
+          examples:
+            - RSA
+        memberId:
+          type: string
+          description: "机构号\t"
+          examples:
+            - '2023010558663764'
+        merchantId:
+          type: string
+          description: "商户号\t"
+          examples:
+            - '2023010558663764'
+        outTradeNo:
+          type: string
+          description: 原商户订单号
+          maxLength: 63
+          example: "outTradeNo16699809174221"
       required:
         - charset
         - version
@@ -2182,7 +2470,7 @@ components:
         - errMessage
     PaymentOrderPayRequest:
       allOf:
-        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/PayBaseRequest'
         - type: object
           properties:
             data:
@@ -2196,7 +2484,7 @@ components:
           type: string
           description: 商户订单号，唯一标识商户的一笔交易，不能重复，只能包含字母、数字、下划线
           maxLength: 63
-          example: "orderorder1650532228089613"
+          example: "394916B2ADFD4D6CAD6CC624C88990D0"
         country:
           type: string
           description: 国家代码，大写字母，参见【支持的国家与币种】
@@ -2209,7 +2497,7 @@ components:
         clearingRail:
           type: string
           description: 枚举值为：SWIFT, SEPA, LOCAL，分别对应签约的SWIFT、SEPA、Local Banks支付方式
-          example: ""
+          example: "LOCAL"
         userId:
           type: string
           description: 商户内部的用户Id，需保证每个ID唯一性
@@ -2219,12 +2507,12 @@ components:
           type: string
           description: 扣款账户的币种代码，大写字母
           maxLength: 3
-          example: "USD"
+          example: "PHP"
         destinationCurrency:
           type: string
           description: 指定到账币种，参考【支付方式列表】
           maxLength: 3
-          example: "IDR"
+          example: "PHP"
         trade:
           $ref: '#/components/schemas/TradeInfo'
         payeeInfo:
@@ -2270,6 +2558,8 @@ components:
         - trade
         - payeeInfo
         - country
+        - sourceAccount
+        - destinationCurrency
     TradeInfo:
       type: object
       properties:
@@ -2297,7 +2587,7 @@ components:
           example: "WALLET"
         targetOrg:
           type: string
-          description: 目标机构，参考【支付方式列表】
+          description: 目标机构
           maxLength: 64
           example: "DANA"
         payeeType:
@@ -2487,12 +2777,12 @@ components:
       properties:
         code:
           type: string
-          description: 返回码，APPLY_SUCCESS代表成功。只代表接口请求成功，不代表订单状态。
-          example: "APPLY_SUCCESS"
+          description: 返回码，00000000代表成功。只代表接口请求成功，不代表订单状态。
+          example: "00000000"
         msg:
           type: string
-          description: 返回描述，'Success.'
-          example: "Success."
+          description: 返回描述，'Success'
+          example: "Success"
         data:
           $ref: '#/components/schemas/PaymentOrderPayResponseData'
       required:
@@ -2513,7 +2803,11 @@ components:
         status:
           type: string
           description: 交易状态
-          example: "PENDING"
+          example: "success"
+          enum:
+            - success
+            - fail
+            - pending 
       required:
         - outTradeNo
         - tradeNo
@@ -2522,11 +2816,11 @@ components:
 
     PaymentOrderQryRequest:
       allOf:
-        - $ref: '#/components/schemas/BaseRequest'
-        - type: object
-          properties:
-            data:
-              $ref: '#/components/schemas/PaymentOrderQryData'
+        - $ref: '#/components/schemas/PayQryBaseRequest'
+        # - type: object
+          # properties:
+          #   data:
+          #     $ref: '#/components/schemas/PaymentOrderQryData'
     PaymentOrderQryData:
       type: object
       properties:
@@ -2538,23 +2832,92 @@ components:
       required:
         - outTradeNo
       description: 请求数据体
+
+    PaymentOrderQryResponseDataMy:
+      type: object
+      description: 查询返回的业务数据体
+      properties:
+        outTradeNo:
+          type: string
+          description: 商户订单号
+          example: "394916B2ADFD4D6CAD6CC624C88990D0"
+        merchantId:
+          type: string
+          description: 商户ID
+          example: "2022000000008454"
+        tradeNo:
+          type: string
+          description: 支付平台交易号
+          example: "111781085063240962"
+        amount:
+          type: string
+          description: 付款金额
+          example: "10.30"
+        currency:
+          type: string
+          description: 付款币种
+          example: "PHP"
+        status:
+          type: string
+          description: 订单状态（success/fail/pending）
+          example: "success"
+        reference:
+          type: string
+          description: 参考信息
+          example: "test"
+        redeemCode:
+          type: string
+          description: 兑换码（若有）
+          example: ""
+        responseCode:
+          type: string
+          description: 业务响应码
+          example: "00000000"
+        responseMsg:
+          type: string
+          description: 业务响应信息
+          example: "Success"
+        payFinishTime:
+          type: string
+          nullable: true
+          description: 支付完成时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+          example: "2024-04-17T06:35:09 +0000"
+        transId:
+          type: string
+          description: 收款银行/机构的交易单号
+          example: "20240418SAARNBARNB1B44410558522170"
+      required:
+        - outTradeNo
+        - tradeNo
+        - status
+        - reference
+        - responseCode
+        - responseMsg
+        - merchantId
+        - amount
+        - currency
     PaymentOrderQryResponse:
       type: object
       properties:
         code:
           type: string
-          description: 返回码，APPLY_SUCCESS代表成功。只代表接口请求成功，不代表订单状态。
-          example: "APPLY_SUCCESS"
+          description: 返回码，00000000代表成功。只代表接口请求成功，不代表订单状态。
+          example: "00000000"
         msg:
           type: string
-          description: 返回描述，'Success.'
-          example: "Success."
+          description: 响应 'Success'
+          example: "Success"
+        # traceId:
+        #   type: string
+        #   description: 跟踪ID。
+        #   example: "d477d033c4ab5e48"
         data:
-          $ref: '#/components/schemas/PaymentOrderQryResponseData'
+          $ref: '#/components/schemas/PaymentOrderQryResponseDataMy'
       required:
-        - msg
+        - traceId
         - code
         - data
+        - msg
     PaymentOrderQryResponseData:
       type: object
       properties:
@@ -2725,17 +3088,17 @@ components:
           properties:
             code:
               type: string
-              description: 回调通知码，APPLY_SUCCESS代表有效回调
+              description: 回调返回码，00000000代表成功。只代表接口请求成功，不代表订单状态。
               maxLength: 32
-              example: "APPLY_SUCCESS"
+              example: "00000000"
             msg:
               type: string
-              description: 回调通知码描述，'Success.'
+              description: 回调通知码描述，'Success'
               maxLength: 256
-              example: "Success."
+              example: "Success"
             notifyTime:
               type: string
-              description: 通知时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+              description: 通知时间
               maxLength: 32
               example: "2023-03-08T16:22:05 +0000"
             notifyType:
@@ -2767,25 +3130,25 @@ components:
           example: "20230308080847PO7777298223436669001"
         transactionUtcTime:
           type: string
-          description: 交易创建时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          description: 交易创建时间
           maxLength: 32
           example: "2023-03-08T10:22:05 +0000"
         fundsFreezeTime:
           type: string
-          description: 资金动账时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          description: 资金动账时间
           example: "2024-04-17T06:35:09 +0000"
         fundsReturnTime:
           type: string
-          description: 资金返还时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          description: 资金返还时间
           example: "2024-04-18T07:13:01 +0000"
         payFinishTime:
           type: string
-          description: 交易完成时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          description: 交易完成时间
           maxLength: 32
           example: "2023-03-08T10:23:05 +0000"
         bounceBackTime:
           type: string
-          description: 退票时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          description: 退票时间
           maxLength: 32
           example: ""
         redeemCode:
@@ -2795,17 +3158,17 @@ components:
           example: "123456"
         expiryTime:
           type: string
-          description: 订单过期时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss Z
+          description: 订单过期时间
           maxLength: 32
           example: "2023-03-12 02:37:37"
         status:
           type: string
-          description: 交易状态，SUCCESS成功, FAILED失败，PENDING进行中，BOUNCEBACK退票
+          description: 交易状态，success成功, fail失败，pending进行中，BOUNCEBACK退票
           maxLength: 32
-          example: "SUCCESS"
+          example: "success"
         subStatus:
           type: string
-          description: 交易子状态，当订单交易状态为PENDING时，PayerMax将提供子状态，展示交易处理进度，具体枚举值请参考：https://docs.payallglobal.com/developers/start/public-body/paramResp
+          description: 交易子状态，当订单交易状态为pending时，提供子状态，展示交易处理进度，具体枚举值请参考：https://docs.payallglobal.com/developers/start/public-body/paramResp
           example: ""
         notifyPhone:
           type: string
@@ -2858,11 +3221,151 @@ components:
           example: "Success"
         code:
           type: string
-          description: 仅可响应 'SUCCESS'（仅代表成功收到通知，不代表订单状态）
-          example: "SUCCESS"
+          description: 仅可响应 '00000000'（仅代表成功收到通知，不代表订单状态）
+          example: "00000000"
       required:
         - msg
         - code
+    # ==============================
+    # 请求体组件
+    # ==============================
+    CurrentBalanceQueryRequest:
+      allOf:
+        - $ref: '#/components/schemas/BalanceBaseRequest'
+        - type: object
+          properties:
+            requestTime:
+              type: string
+              description: 请求时间，符合rfc3339规范，格式：yyyy-MM-dd'T'HH:mm:ss.SSSXXX 时间需要在当前时间两分钟内
+              maxLength: 32
+              example: "2025-04-05T12:00:00.000+08:00"
+            # appId:
+            #   type: string
+            #   description: 商户应用Id，PayerMax分配给商户应用的唯一标识
+            #   maxLength: 64
+            #   example: "127d5de5b5124d11b9132c6ec9cc61d3"
+            data:
+              $ref: '#/components/schemas/CurrentBalanceQueryRequestData'
+          required:
+            - requestTime
+            - appId
+            - data
+
+    CurrentBalanceQueryRequestData:
+      type: object
+      title: 请求数据体
+      properties:
+        # plainSign:
+        #   type: boolean
+        #   title: 是否返回为0余额账户
+        #   description: '是否返回余额为0的账户 true返回 false不返回 默认值: false'
+        #   default: false
+        #   example: true
+        accountType:
+          type: array
+          description: 账户类型,ACQUIRING 收单账户 FREEZE 冻结账户 SETTLE 待结算账户 REVERSE 保证金账户 当未指定账户类型时，返回所有账户
+          items:
+            type: string
+            maxLength: 32
+            examples:
+              - AVAILABLE
+          example: 
+            - ACQUIRING
+            - SETTLE
+        accountCurrency:
+          type: string
+          description: 币种代码,符合ISO 4217规范. 当未指定币种时，返回所有账户
+          maxLength: 3
+          # items:
+          #   type: string
+            
+          #   examples:
+          #     - USD
+          example: USD
+
+    # ==============================
+    # 返回体组件
+    # ==============================
+    CurrentBalanceQueryResponse:
+      type: object
+      required:
+        - data
+        - code
+        - msg
+      properties:
+        code:
+          type: string
+          description: 返回码，’00000000’代表成功
+          example: '00000000'
+        msg:
+          type: string
+          description: 返回描述，’Success’
+          example: "Success"
+        data:
+          $ref: '#/components/schemas/CurrentBalanceQueryResponseData'
+
+    CurrentBalanceQueryResponseData:
+      type: object
+      title: 返回数据体
+      required:
+        - accountRealTimeTypes
+        - inquiryTime
+      properties:
+        accountRealTimeTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBalanceItem'
+          example:
+            - balance: 0.59
+              accountType: ACQUIRING
+              currency: AED
+            - balance: 776.34
+              accountType: ACQUIRING
+              currency: USD
+
+        inquiryTime:
+          type: string
+          description: 查询时间,符合rfc3339规范，格式：yyyy-MM-dd’T’HH:mm:ss.SSSXXX
+          maxLength: 64
+          example: "2025-04-05T12:00:00.000+08:00"
+        # errorCode:
+        #   type: string
+        #   description: 查询失败错误码
+        #   maxLength: 32
+        #   title: 错误码
+        # errorMsg:
+        #   type: string
+        #   description: 查询失败错误码描述
+        #   maxLength: 256
+        #   title: 错误信息
+
+    AccountBalanceItem:
+      type: object
+      required:
+        - balance
+        - accountType
+        - currency
+      properties:
+        balance:
+          type: number
+          title: 金额
+          description: 单位元
+          format: double
+          examples:
+            - 9998.11
+        accountType:
+          type: string
+          title: 账户类型
+          maxLength: 32
+          examples:
+            - AVAILABLE
+        currency:
+          type: string
+          title: 3位币种代码
+          description: 符合ISO 4217规范.
+          maxLength: 3
+          examples:
+            - USD
 security:
   - signature: []
 x-internal: false
