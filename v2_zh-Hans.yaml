@@ -550,7 +550,7 @@ paths:
           description: 开发环境
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
-  /currentBalanceQuery:
+  /api/mapi/v1/payments/open/api/currentBalanceQuery:
     post:
       summary: 实时余额查询
       tags:
