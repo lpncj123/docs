@@ -102,8 +102,13 @@
               }
             ]
           },
-
-           {
+          {
+            "group": "多币种资金管理",
+            "pages": [
+               "api-reference/多币种资金管理/实时余额查询"
+            ]
+          },
+          {
             "group": "WEBHOOKS",
             "pages": [
               {
