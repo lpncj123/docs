@@ -890,6 +890,7 @@ components:
                 - KREDIVO_ID
                 - AKULAKU_PAYLATER
                 - KPLUS
+                - QRPH
               description: 支付渠道
             transTimeout:
               type: string
@@ -1120,6 +1121,7 @@ components:
             - FILEUPLOAD
             - INQUIRYREGISTRATIONSTATUS
             - AUTHORIZE
+            - CASHIER_PAY
           description: 交易类型
           default: PAY
         accessType:
