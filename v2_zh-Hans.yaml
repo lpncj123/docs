@@ -687,6 +687,13 @@ webhooks:
         - 付款
       summary: 付款结果通知
       description: '当付款成功后，通过开发者webhook配置，开发平台会发送通知给商户，当接受不成功或者发送失败时, 会重发8次, 时间间隔为5s,20s,1m,5m,30m,2h,24h'
+      parameters:
+        - name: signature
+          in: header
+          description: '使用平台私钥对requestBody做了加签, 请使用平台公钥对requestBody做签名验证'
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
