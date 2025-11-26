@@ -898,6 +898,8 @@ components:
                 - AKULAKU_PAYLATER
                 - KPLUS
                 - QRPH
+                - BANK_TRANSFER
+                - KOREAN_CARDS
               description: 支付渠道
             transTimeout:
               type: string
