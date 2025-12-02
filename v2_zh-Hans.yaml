@@ -22,14 +22,14 @@ paths:
     post:
       tags:
         - 收单
-      summary: 消费
+      summary: 消费(纯API)
       description: 发起消费交易，消费成功时会产生实际扣款
       operationId: post-api-mapi-v1-payments-open-api-pay
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pay'
+              $ref: '#/components/schemas/APIPay'
       responses:
         '200':
           description: OK
@@ -65,6 +65,64 @@ paths:
         - url: 'https://mpgw.payallglobal.com/mp-gateway/'
           description: 正式生产环境
       x-internal: false
+  
+  /api/mapi/v1/payments/open/api/pay(checkout):
+    x-mint:
+      path: /api/mapi/v1/payments/open/api/pay
+    post:
+      tags:
+        - 收单
+      summary: 消费-收银台
+      description: |
+        <strong><span style={{ color: 'red'}}>调用接口时请忽略括号及其中的标识内容</span></strong>
+        ，发起消费交易，消费成功时会产生实际扣款。    
+        
+      operationId: post-api-mapi-v1-payments-open-api-paypay(checkout)
+      x-mint:                     # 必须是 x-mint，不是 x-mintlify-path！
+        path: /api/mapi/v1/payments/open/api/pay   # 关键：自定义页面 URL
+        metadata:
+          title: 消费 - 收银台版
+          sidebarTitle: 消费（收银台）
+          path: /api/mapi/v1/payments/open/api/pay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutPay'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayResponse'
+              examples:
+                Example 1:
+                  value:
+                    isSuccess: true
+                    errCode: string
+                    errMessage: string
+                    status: string
+                    traceId: string
+                    data:
+                      orderId: string
+                      merchantNo: string
+                      merchantOrderId: string
+                      currency: string
+                      payMethodResponse:
+                        isRedirect: string
+                        redirectMethod: string
+                        termUrl: string
+                        redirectParam: {}
+                        codeUrl: string
+                      transAmt: string
+      security:
+        - signature: []
+      servers:
+        - url: 'https://mpgwpre.payallglobal.com/mp-gateway/'
+          description: 开发环境
+        - url: 'https://mpgw.payallglobal.com/mp-gateway/'
+          description: 正式生产环境
   /api/mapi/v1/payments/open/api/preAuth:
     post:
       tags:
@@ -1038,6 +1096,450 @@ components:
             - merchantOrderTime
             - merchantRegion
       x-User: null
+    APIPay:
+      title: Pay
+      examples:
+        - charset: UTF-8
+          version: "2.0.0"
+          transType: PAY
+          accessType: s2s
+          signType: RSA
+          merchantId: 商户号
+          transChannel: ALIPAY_CN
+          transAmt: "5.67"
+          currency: USD
+          merchantOrderId: "商户订单号"
+          merchantOrderTime: "商户订单时间"
+          goodsName: "商品名称,多个商品 用\";\"隔开"
+          carrierId: "测试"
+          deviceChannel: "PC/IOS/Android"
+          payMode: H5
+          merchantRegion: HK
+          transTimeout: 20
+          redirectUrl: "https://dash.proxy302.com/charge"
+          notifyUrl: "https://dash-api.proxy302.com/api/webhook/chinagpay_alipay"
+      allOf:
+        - $ref: '#/components/schemas/APIBaseRequest'
+        - type: object
+          properties:
+            deviceChannel:
+              type: string
+              description: 设备渠道
+            transChannel:
+              type: string
+              enum:
+                - WEIXIN
+                - UNIONPAY
+                - ALIPAY_CN
+                - ALIPAY_HK
+                - GCASH
+                - BPI
+                - TNG
+                - BOOST
+                - DANA
+                - KAKAOPAY
+                - TRUEMONEY
+                - BRAZIL_PIX
+                - Ewallet_PicPay
+                - Khipu
+                - RABBIT_LINE_PAY
+                - ALIPAY_INSTORE
+                - NAVERPAY
+                - TOSSPAY
+                - MAYA
+                - BILLEASE
+                - GoPay
+                - OVO
+                - DOKU
+                - Dragonpay
+                - Konbini
+                - PayEasy
+                - GrabPay
+                - PAYCO
+                - MPAY
+                - PROMPT_PAY
+                - HIPAY
+                - TINABA
+                - KREDIVO_ID
+                - AKULAKU_PAYLATER
+                - KPLUS
+                - QRPH
+                - BANK_TRANSFER
+                - KOREAN_CARDS
+              description: 支付渠道
+            transTimeout:
+              type: string
+              description: '订单有效时长(整数格式 单位:分钟)'
+            carrierId:
+              type: string
+              description: 发生交易的网站域名或者APP名称
+              examples:
+                - carrierId
+            currency:
+              type: string
+              description: '订单币种[ISO4217](https://www.iso.org/standard/46121.html)币种的字母码 eg. USD, CNY, EUR'
+              examples:
+                - USD
+            transAmt:
+              type: string
+              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110【创建token快捷支付时，金额为0代表只创建令牌，非0代表创建令牌并支付】
+              examples:
+                - '20.01'
+            goodsName:
+              type: string
+              description: "商品名称,多个商品 用\";\"隔开\t"
+              examples:
+                - Iphone15
+            notifyUrl:
+              type: string
+              description: 异步通知地址
+              format: uri
+              minLength: 10
+              maxLength: 200
+            redirectUrl:
+              type: string
+              description: 前台回调地址
+              examples:
+                - 'http://www.gogole.com'
+            merchantOrderId:
+              type: string
+              description: 商户订单号
+              examples:
+                - '20230424141154'
+            payMode:
+              type: string
+              enum:
+                - QRCODE
+                - MICROPAY
+                - JSAPI
+                - MINIPROGRAM
+                - APP
+                - H5
+                - 3D
+                - FIXEDCODE
+              description: |
+                交易类型
+                更多描述参考 [支付方式](api#/#支付方式)
+              default: QRCODE
+              examples:
+                - QRCODE
+            merchantOrderTime:
+              type: string
+              description: 商户订单时间
+              format: date-time
+            merchantRegion:
+              type: string
+              description: 商户所在地区
+              examples:
+                - US
+
+          required:
+            - transChannel
+            - currency
+            - transAmt
+            - merchantOrderId
+            - payMode
+            - merchantOrderTime
+            - merchantRegion
+      x-User: null
+    CheckoutPay:
+      title: Pay
+      examples:
+        - charset: UTF-8
+          version: 2.0.0
+          transType: PAY
+          accessType: s2s
+          signType: RSA
+          memberId: '2023010558663764'
+          merchantId: '2023010558663764'
+          threeDsType: '2.0'
+          deviceChannel: string
+          transChannel: WEIXIN
+          transTimeout: string
+          carrierId: carrierId
+          currency: USD
+          transAmt: '20.01'
+          goodsName: Iphone15
+          dcc: DCC
+          notifyUrl: 'http://example.com'
+          redirectUrl: 'http://www.gogole.com'
+          merchantOrderId: '20230424141154'
+          customerIp: 18.277.26.154
+          payMode: QRCODE
+          payMethodInfo:
+            cardNo: 444433******1111
+            expirationMonth: '01'
+            expirationYear: '2026'
+            cvv: '123'
+            firstName: Bren
+            lastName: Qiu
+            phone: '18817536697'
+          merchantOrderTime: '2019-08-24T14:15:22Z'
+          osType: IOS
+          merchantRegion: US
+          authCode: '133788758877188822'
+          appId: wxd678efh567hg6787
+          openId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
+          reqReserved: reqReserved
+          reserved: reserved
+          buyerId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
+          address:
+            zipCode: '344104'
+            region: US
+            city: ShangHai
+            state: ShangHai
+            phone: '18817536697'
+            email: string
+            address1: Lou Lan street
+            address2: Lou Lan street 2
+          customer:
+            address:
+              zipCode: '344104'
+              region: US
+              city: ShangHai
+              state: ShangHai
+              phone: '18817536697'
+              email: string
+              address1: Lou Lan street
+              address2: Lou Lan street 2
+            certificate:
+              number: string
+              type: string
+          subMerchantId: string
+          userAgent: string
+          goods:
+            - referenceGoodsId: M1006
+              goodsName: 单品惠-6
+              goodsCategory: '1001'
+              goodsQuantity: '100'
+              goodsUnitAmount: '100.01'
+          store:
+            storeTerminalId: '0001'
+          browserInfo:
+            acceptHeader: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+            javaEnabled: 'true'
+            language: en-US
+            colorDepth: '160'
+            screenHeight: '1024'
+            screenWidth: '648'
+            browserTz: string
+            browserIp: 8.8.8.8
+            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+          shippingInfo:
+            firstName: "James"
+            lastName: "Smith"
+            phoneNo: "903124360628"
+            email: "James@example.com"
+            address1: "GOLGELI SOKAK NO.34, 06700"
+            city: "GAZIOSMANPASA/ANKAR"
+            country: "TR"
+            zipCode: "06700"
+
+          billingInfo:
+            firstName: "James"
+            lastName: "Smith"
+            phoneNo: "903124360628"
+            email: "James@example.com"
+            address1: "GOLGELI SOKAK NO.34, 06700"
+            city: "GAZIOSMANPASA/ANKAR"
+            country: "TR"
+            zipCode: "06700"
+
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            threeDsType:
+              type: string
+              description: 使用3d交易必传(示例值 1.0 2.0)
+              examples:
+                - '2.0'
+            deviceChannel:
+              type: string
+              description: 设备渠道
+            transChannel:
+              type: string
+              enum:
+                - WEIXIN
+                - UNIONPAY
+                - ALIPAY_CN
+                - ALIPAY_HK
+                - GCASH
+                - BPI
+                - TNG
+                - BOOST
+                - DANA
+                - KAKAOPAY
+                - TRUEMONEY
+                - BRAZIL_PIX
+                - Ewallet_PicPay
+                - Khipu
+                - RABBIT_LINE_PAY
+                - ALIPAY_INSTORE
+                - NAVERPAY
+                - TOSSPAY
+                - MAYA
+                - BILLEASE
+                - GoPay
+                - OVO
+                - DOKU
+                - Dragonpay
+                - Konbini
+                - PayEasy
+                - GrabPay
+                - PAYCO
+                - MPAY
+                - PROMPT_PAY
+                - HIPAY
+                - TINABA
+                - KREDIVO_ID
+                - AKULAKU_PAYLATER
+                - KPLUS
+                - QRPH
+                - BANK_TRANSFER
+                - KOREAN_CARDS
+              description: 支付渠道
+            transTimeout:
+              type: string
+              description: '订单有效时长(整数格式 单位:分钟)'
+            carrierId:
+              type: string
+              description: 发生交易的网站域名或者APP名称
+              examples:
+                - carrierId
+            currency:
+              type: string
+              description: '订单币种[ISO4217](https://www.iso.org/standard/46121.html)币种的字母码 eg. USD, CNY, EUR'
+              examples:
+                - USD
+            transAmt:
+              type: string
+              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110【创建token快捷支付时，金额为0代表只创建令牌，非0代表创建令牌并支付】
+              examples:
+                - '20.01'
+            goodsName:
+              type: string
+              description: "商品名称,多个商品 用\";\"隔开\t"
+              examples:
+                - Iphone15
+            dcc:
+              type: string
+              description: 交易是否走DCC 传送：dcc
+              examples:
+                - DCC
+            notifyUrl:
+              type: string
+              description: 异步通知地址
+              format: uri
+              minLength: 10
+              maxLength: 200
+            redirectUrl:
+              type: string
+              description: 前台回调地址
+              examples:
+                - 'http://www.gogole.com'
+            merchantOrderId:
+              type: string
+              description: 商户订单号
+              examples:
+                - '20230424141154'
+            customerIp:
+              type: string
+              description: 用户ip
+              examples:
+                - 18.277.26.154
+            payMode:
+              type: string
+              enum:
+                - QRCODE
+                - MICROPAY
+                - JSAPI
+                - MINIPROGRAM
+                - APP
+                - H5
+                - 3D
+                - FIXEDCODE
+              description: |
+                交易类型
+                更多描述参考 [支付方式](api#/#支付方式)
+              default: QRCODE
+              examples:
+                - QRCODE
+            payMethodInfo:
+              $ref: '#/components/schemas/PayMethodInfo'
+            merchantOrderTime:
+              type: string
+              description: 商户订单时间
+              format: date-time
+            osType:
+              type: string
+              description: 手机操作系统类型(支付类型为APP时必传)
+              examples:
+                - IOS
+            merchantRegion:
+              type: string
+              description: 商户所在地区
+              examples:
+                - US
+            authCode:
+              type: string
+              description: "授权码(支付渠道为WEIXIN且支付类型为MICROPAY时需传值)\t"
+              examples:
+                - '133788758877188822'
+            appId:
+              type: string
+              description: 公众账号ID
+              examples:
+                - wxd678efh567hg6787
+            openId:
+              type: string
+              description: 应用内用户ID
+              examples:
+                - oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
+            reqReserved:
+              type: string
+              description: 商户扩展字段
+              examples:
+                - reqReserved
+            reserved:
+              type: string
+              description: 保留字段
+              examples:
+                - reserved
+            buyerId:
+              type: string
+              description: 商户用户ID(支付渠道为BRAZIL_PIX必传)
+              examples:
+                - oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
+            address:
+              $ref: '#/components/schemas/Address'
+            customer:
+              $ref: '#/components/schemas/Customer'
+            subMerchantId:
+              type: string
+            userAgent:
+              type: string
+            goods:
+              type: array
+              items:
+                $ref: '#/components/schemas/Goods'
+            store:
+              $ref: '#/components/schemas/Store'
+            browserInfo:
+              $ref: '#/components/schemas/BrowserInfo'
+            shippingInfo:
+              $ref: '#/components/schemas/ShippingInfo'
+            billingInfo:
+              $ref: '#/components/schemas/BillingInfo'
+          required:
+            - transChannel
+            - currency
+            - transAmt
+            - merchantOrderId
+            - payMode
+            - merchantOrderTime
+            - merchantRegion
+      x-User: null
     PayBaseRequest:
       type: object
       description: 支付查询基础请求对象
@@ -1099,7 +1601,6 @@ components:
         - signType
         - transType
         - version
-      
     BaseRequest:
       type: object
       properties:
@@ -1170,6 +1671,70 @@ components:
           accessType: PAY
           signType: RSA
           memberId: stringstri
+          merchantId: stringstri  
+    APIBaseRequest:
+      type: object
+      properties:
+        charset:
+          type: string
+          description: 交互数据的编码【utf-8】
+          default: UTF-8
+          examples:
+            - UTF-8
+        version:
+          type: string
+          description: "接口版本，当前版本为【2.0.0】,目前只能传2.0.0，不能不传\t"
+          examples:
+            - 2.0.0
+        transType:
+          type: string
+          enum:
+            - PAY
+            - CREDIT_CARD
+            - 3D_PREAUTH_VOIDS
+            - 3D_PREAUTH_COMPLETION
+            - REFUND
+            - VOIDS
+            - QUERY
+            - TRANSFER
+            - DOWNLOAD
+            - REGISTRATION
+            - FILEUPLOAD
+            - INQUIRYREGISTRATIONSTATUS
+            - AUTHORIZE
+            - CASHIER_PAY
+          description: 交易类型
+          default: PAY
+        accessType:
+          type: string
+          description: "接口访问类型\t"
+          default: s2s
+          examples:
+            - s2s
+        signType:
+          type: string
+          description: 报文签名类型
+          examples:
+            - RSA
+        merchantId:
+          type: string
+          description: "商户号\t"
+          examples:
+            - '2023010558663764'
+      required:
+        - charset
+        - version
+        - transType
+        - accessType
+        - signType
+        - merchantId
+      x-examples:
+        Example 1:
+          charset: UTF-8
+          version: 2.0.0
+          transType: string
+          accessType: PAY
+          signType: RSA
           merchantId: stringstri
     BalanceBaseRequest:
       type: object
@@ -2451,7 +3016,7 @@ components:
                   type: string
                   enum:
                     - WPCN
-                    - WPHK
+                    - WPHK 
                   description: '<span style="color:red">注意只有微信支付会返回</span>'
               required:
                 - completeTime
@@ -3377,6 +3942,153 @@ components:
           maxLength: 3
           examples:
             - USD
+
+    ShippingInfo:
+      type: object
+      description: 邮寄信息。**电商场景下需要上送**。如果传入该对象，则内层必填字段必须传入。
+      required:
+        - firstName
+        - lastName
+        - phoneNo
+        - email
+        - address1
+        - city
+        - country
+        - zipCode
+      properties:
+        firstName:
+          type: string
+          description: 收货人名
+          maxLength: 64
+          example: "张"
+        middleName:
+          type: string
+          description: 收货人中间名
+          maxLength: 64
+          example: "大"
+        lastName:
+          type: string
+          description: 收货人姓
+          maxLength: 64
+          example: "三"
+        phoneNo:
+          type: string
+          description: 收货人手机号
+          maxLength: 32
+          example: "13800138000"
+        email:
+          type: string
+          description: 收货邮箱地址
+          maxLength: 255
+          example: "zhangsan@example.com"
+        address1:
+          type: string
+          description: 收货地址1（主要街道地址）
+          maxLength: 1024
+          example: "成都市高新区天府大道中段1234号"
+        address2:
+          type: string
+          description: 收货地址2（补充信息，如楼号、单元号）
+          maxLength: 1024
+          example: "XX大厦A座1808室"
+        city:
+          type: string
+          description: 收货地址所在城市
+          maxLength: 64
+          example: "成都"
+        region:
+          type: string
+          description: 收货地址所在区域（如区/县）
+          maxLength: 64
+          example: "高新区"
+        state:
+          type: string
+          description: 收货地址所在州。**送货到加拿大、美国、英国、澳大利亚时必填**
+          maxLength: 32
+          example: "California"
+        country:
+          type: string
+          description: 收货地址所在国家（ISO 3166-1 alpha-2 两位代码）
+          maxLength: 2
+          example: "CN"
+        zipCode:
+          type: string
+          description: 收货地址邮编
+          maxLength: 32
+          example: "610000"
+
+    # =========================================================
+    # 账单地址信息（Billing Info）
+    # =========================================================
+    BillingInfo:
+      type: object
+      description: 信用卡账单信息。如果传入该对象，则内层必填字段必须传入。
+      required:
+        - email
+        - address1
+        - city
+        - country
+      properties:
+        firstName:
+          type: string
+          description: 账单人名
+          maxLength: 64
+          example: "张"
+        middleName:
+          type: string
+          description: 账单人中间名
+          maxLength: 64
+          example: "大"
+        lastName:
+          type: string
+          description: 账单人姓
+          maxLength: 64
+          example: "三"
+        phoneNo:
+          type: string
+          description: 账单人手机号
+          maxLength: 32
+          example: "13800138000"
+        email:
+          type: string
+          description: 账单邮箱地址
+          maxLength: 255
+          example: "zhangsan@example.com"
+        address1:
+          type: string
+          description: 账单地址1（主要街道地址）
+          maxLength: 1024
+          example: "成都市高新区天府大道中段1234号"
+        address2:
+          type: string
+          description: 账单地址2（补充信息）
+          maxLength: 1024
+          example: "XX大厦A座1808室"
+        city:
+          type: string
+          description: 账单地址所在城市
+          maxLength: 64
+          example: "成都"
+        region:
+          type: string
+          description: 账单地址所在区域
+          maxLength: 64
+          example: "高新区"
+        state:
+          type: string
+          description: 账单地址所在州。**送货到加拿大、美国、英国、澳大利亚时需要上送**
+          maxLength: 32
+          example: "California"
+        country:
+          type: string
+          description: 账单地址所在国家（ISO 3166-1 alpha-2 两位代码）
+          maxLength: 2
+          example: "CN"
+        zipCode:
+          type: string
+          description: 账单地址邮编
+          maxLength: 16
+          example: "610000"
 security:
   - signature: []
 x-internal: false
