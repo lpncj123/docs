@@ -26,14 +26,7 @@
                 ]
               },
                "developers/start/signRule",
-               {
-                "group": "支付方式列表",
-                "hidden": true,
-                "pages": [
-                  "developers/start/payMethod"
-                ]
-               }
-
+                "developers/start/payMethod"
             ]
           },
           {

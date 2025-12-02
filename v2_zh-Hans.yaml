@@ -22,7 +22,7 @@ paths:
     post:
       tags:
         - 收单
-      summary: 消费(纯API)
+      summary: 消费
       description: 发起消费交易，消费成功时会产生实际扣款
       operationId: post-api-mapi-v1-payments-open-api-pay
       requestBody:
@@ -66,24 +66,13 @@ paths:
           description: 正式生产环境
       x-internal: false
   
-  /api/mapi/v1/payments/open/api/pay(checkout):
-    x-mint:
-      path: /api/mapi/v1/payments/open/api/pay
+  /api/mapi/v1/payments/open/api/cashier:
     post:
       tags:
         - 收单
       summary: 消费-收银台
-      description: |
-        <strong><span style={{ color: 'red'}}>调用接口时请忽略括号及其中的标识内容</span></strong>
-        ，发起消费交易，消费成功时会产生实际扣款。    
-        
-      operationId: post-api-mapi-v1-payments-open-api-paypay(checkout)
-      x-mint:                     # 必须是 x-mint，不是 x-mintlify-path！
-        path: /api/mapi/v1/payments/open/api/pay   # 关键：自定义页面 URL
-        metadata:
-          title: 消费 - 收银台版
-          sidebarTitle: 消费（收银台）
-          path: /api/mapi/v1/payments/open/api/pay
+      description: 发起消费交易，消费成功时会产生实际扣款。    
+      operationId: post-api-mapi-v1-payments-open-api-cashier
       requestBody:
         content:
           application/json:
@@ -3945,7 +3934,7 @@ components:
 
     ShippingInfo:
       type: object
-      description: 邮寄信息。**电商场景下需要上送**。如果传入该对象，则内层必填字段必须传入。
+      description: 邮寄信息。<span style="color:red">电商场景下需要上送。如果传入该对象，则内层必填字段必须传入</span>
       required:
         - firstName
         - lastName
@@ -4022,7 +4011,7 @@ components:
     # =========================================================
     BillingInfo:
       type: object
-      description: 信用卡账单信息。如果传入该对象，则内层必填字段必须传入。
+      description: 信用卡账单信息。<span style="color:red">电商场景下需要上送。如果传入该对象，则内层必填字段必须传入</span>
       required:
         - email
         - address1
