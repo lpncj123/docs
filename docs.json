@@ -25,7 +25,14 @@
                   "developers/start/public-body/paramResp"
                 ]
               },
-               "developers/start/signRule"
+               "developers/start/signRule",
+               {
+                "group": "支付方式列表",
+                "hidden": true,
+                "pages": [
+                  "developers/start/payMethod"
+                ]
+               }
 
             ]
           },
@@ -62,6 +69,7 @@
                 "group": "支付",
                 "pages": [
                   "api-reference/payment/pay",
+                  "api-reference/payment/pay-checkout",
                   "api-reference/payment/auth",
                   "api-reference/payment/order-query",
                   "api-reference/payment/voids",

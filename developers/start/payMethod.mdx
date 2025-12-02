@@ -1,0 +1,727 @@
+---
+title: 支付方式列表
+sidebar_position: 1
+---
+import React, { useState } from "react";
+export const FundingChannelTable = () => {
+  const fundingChannels = [
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "HK",
+    "currency": "HKD",
+    "min_amount": "1.00",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "CN",
+    "currency": "USD",
+    "min_amount": "1.00",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "HK",
+    "currency": "CNY",
+    "min_amount": "1.00",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "HK",
+    "currency": "CNY",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "alipaycn",
+    "country": "HK",
+    "currency": "CNY",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "kakaopay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "10000000000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "naver_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "10000000000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "CN",
+    "currency": "HKD",
+    "min_amount": "1.00",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "CN",
+    "currency": "CNY",
+    "min_amount": "1.00",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "HK",
+    "currency": "USD",
+    "min_amount": "1.00",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "alipaycn",
+    "country": "CN",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "alipaycn",
+    "country": "CN",
+    "currency": "HKD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "alipayhk",
+    "country": "HK",
+    "currency": "HKD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "alipayhk",
+    "country": "HK",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "gcash",
+    "country": "PH",
+    "currency": "PHP",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "gcash",
+    "country": "PH",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "kakaopay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "kakaopay",
+    "country": "KR",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "naver_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "naver_pay",
+    "country": "KR",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "toss_pay",
+    "country": "KR",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "toss_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "toss_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "10000000000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "payco",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "10000000000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "bpi",
+    "country": "PH",
+    "currency": "PHP",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "bpi",
+    "country": "PH",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "billease",
+    "country": "PH",
+    "currency": "PHP",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "billease",
+    "country": "PH",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "truemoney",
+    "country": "TH",
+    "currency": "THB",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "truemoney",
+    "country": "TH",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "rabbit_line_pay",
+    "country": "TH",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "rabbit_line_pay",
+    "country": "TH",
+    "currency": "THB",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "payco",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "payco",
+    "country": "KR",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "tng",
+    "country": "MY",
+    "currency": "MYR",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "tng",
+    "country": "MY",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "boost",
+    "country": "MY",
+    "currency": "USD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "boost",
+    "country": "MY",
+    "currency": "MYR",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "dana",
+    "country": "ID",
+    "currency": "IDR",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "wechatpay",
+    "country": "HK",
+    "currency": "HKD",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "kakaopay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "naver_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "toss_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "payco",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "0.01",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "qrph",
+    "country": "PH",
+    "currency": "PHP",
+    "min_amount": "200.00",
+    "max_amount": "10000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "kakaopay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "100000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "naver_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "100000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "payco",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "100000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "WALLET",
+    "target_org": "toss_pay",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "100000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "BANK_TRANSFER",
+    "target_org": "bank_transfer",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "100000.00",
+    "expire_time": 60
+  },
+  {
+    "product_code": "KOREAN_CARDS",
+    "target_org": "korean_cards",
+    "country": "KR",
+    "currency": "KRW",
+    "min_amount": "100.00",
+    "max_amount": "100000.00",
+    "expire_time": 60
+  }
+]
+  const filterArrays = ["country", "currency", "target_org"];
+  const [filters, setFilters] = useState({
+    country: "",
+    currency: "",
+    target_org: "",
+  });
+  
+  const [hoveredRow, setHoveredRow] = useState(null);
+  const [activeRow, setActiveRow] = useState(null)
+  const filteredData = fundingChannels.filter(item => {
+    return (
+      (filters.country === "" || item.country === filters.country) &&
+      (filters.currency === "" || item.currency === filters.currency) &&
+      (filters.target_org === "" || item.target_org === filters.target_org)
+    );
+  });
+  const ITEMS_PER_PAGE = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentData = filteredData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+  const getUniqueOptions = (key) => {
+    const values = [...new Set(fundingChannels.map(item => item[key]))].sort();
+    return ["全部", ...values];
+  };
+  const mouseOnModalName="product_code"
+  return (
+    <div style={{ margin: "32px 0" }}>
+      <div style={{ marginBottom: "24px", display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "end" }}>
+        {filterArrays.map(key => (
+          <div key={key}>
+             <label style={{ display: "block", marginBottom: "6px", fontSize: "14px", fontWeight: "600" }}>
+              {key === "country" ? "国家" : key === "currency" ? "币种" : "目标机构"}
+            </label>
+            <select 
+              value={filters[key]}
+              onChange={(e) => {
+                setFilters({
+                  ...filters,
+                  [key]: e.target.value
+                });
+                setCurrentPage(1);
+              }}
+              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #ccc", fontSize: "14px", minWidth: "120px" }}
+            >
+              {getUniqueOptions(key).map(option => (
+              <option key={option} value={option === "全部" ? "" : option}>
+                {option}
+              </option>
+            ))}
+            </select>
+          </div>
+
+        ))}
+        <button
+          onClick={() => { setFilters({ country: "", currency: "", target_org: "" }); setCurrentPage(1); }}
+          style={{ padding: "10px 16px", borderRadius: "6px", border: "1px solid #ddd", backgroundColor: "#f9f9f9" }}
+        >
+          重置
+        </button>
+      </div>
+    
+      <div style={{ marginBottom: "20px", fontSize: "15px", color: "#555" }}>
+        共 <strong>{fundingChannels.length}</strong> 条支付方式 · 第 {currentPage} / {totalPages} 页
+      </div>
+      <div>
+      <table style={{
+        borderCollapse: "collapse",
+        fontSize: "15px",
+        backgroundColor: "#fff",
+        borderRadius: "12px",
+        overflow: "hidden",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.06)"
+      }}>
+        <thead>
+          <tr style={{ backgroundColor: "#ffffffff", color: "white" }}>
+            <th style={{ padding: "16px", textAlign: "left" }}>支付方式类型</th>
+            <th style={{ padding: "16px", textAlign: "left" }}>目标机构</th>
+            <th style={{ padding: "16px", textAlign: "left" }}>国家</th>
+            <th style={{ padding: "16px", textAlign: "left" }}>币种</th>
+            <th style={{ padding: "16px", textAlign: "left" }}>最小金额</th>
+            <th style={{ padding: "16px", textAlign: "left" }}>最大金额</th>
+            <th style={{ padding: "16px", textAlign: "left" }}>过期时间</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {currentData.map((item, index) => (
+            <tr
+              key={index}
+              style={{
+                backgroundColor: index % 2 === 0 ? "#f8f9ff" : "white",
+                transition: "background-color 0.2s"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#eef0ff"}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = index % 2 === 0 ? "#f8f9ff" : "white"}
+            >
+              <td
+                  style={{
+                    padding: "16px",
+                    borderBottom: "1px solid #e9ecef",
+                    position: "relative",
+                    cursor: "pointer"
+                  }}
+                  onMouseEnter={() => setActiveRow(index)}
+                  onMouseLeave={() => setActiveRow(null)}
+                >
+                  <strong>{item.product_code}</strong>
+
+
+                  <div style={{
+                    position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "rgba(0,0,0,0.9)",
+            color: "white",
+            padding: "20px",
+            borderRadius: "12px",
+            maxWidth: "600px",
+            maxHeight: "80vh",
+            overflow: "auto",
+            zIndex: 9999,
+            boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+            fontFamily: "monospace",
+            fontSize: "14px",
+            lineHeight: "1.6",
+                    opacity: activeRow === index ? 1 : 0,
+                    visibility: activeRow === index ? "visible" : "hidden",
+                    transition: "opacity 0.8s ease, visibility 1s ease",
+                    marginTop: "8px",
+                    maxWidth: "600px",
+                    wordBreak: "break-all"
+                  }}
+                  onMouseEnter={() => setActiveRow(index)}  
+                  onMouseLeave={() => setActiveRow(null)}   
+                  >
+                    <div style={{ marginBottom: "12px", fontWeight: "bold", color: "#4ade80" }}>
+                      API Params
+                    </div>
+                    <pre style={{ margin: 0 }}>
+                      {JSON.stringify(item, null, 2)}
+                    </pre>
+                  </div>
+                </td>
+              <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
+                {item.target_org}
+              </td>
+              <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
+                {item.country}
+              </td>
+              <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
+                {item.currency}
+              </td>
+              <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
+                {item.min_amount}
+              </td>
+              <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
+                {item.max_amount}
+              </td>
+              <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
+                {item.expire_time}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {hoveredRow && (
+          <div style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "rgba(0,0,0,0.9)",
+            color: "white",
+            padding: "20px",
+            borderRadius: "12px",
+            maxWidth: "600px",
+            maxHeight: "80vh",
+            overflow: "auto",
+            zIndex: 9999,
+            boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+            fontFamily: "monospace",
+            fontSize: "14px",
+            lineHeight: "1.6"
+          }}>
+            <div style={{ marginBottom: "12px", fontSize: "16px", fontWeight: "bold" }}>
+              当前行完整数据
+            </div>
+            <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
+              {JSON.stringify(hoveredRow, null, 2)}
+            </pre>
+            <div style={{ marginTop: "16px", textAlign: "right", fontSize: "12px", opacity: 0.8 }}>
+              鼠标移开自动关闭
+            </div>
+          </div>
+        )}
+      </div>
+      <div style={{ marginTop: "32px", display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+        <button
+          onClick={() => goToPage(1)}
+          disabled={currentPage === 1}
+          style={{
+            padding: "10px 18px",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+            backgroundColor: currentPage === 1 ? "#f5f5f5" : "white",
+            cursor: currentPage === 1 ? "not-allowed" : "pointer",
+            opacity: currentPage === 1 ? 0.5 : 1,
+          }}
+        >
+        首页
+        </button>
+        <button
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          style={{ padding: "10px 18px", borderRadius: "8px", border: "1px solid #ddd", backgroundColor: currentPage === 1 ? "#f5f5f5" : "white" }}
+        >
+          上一页
+        </button>
+
+        <span style={{ margin: "0 20px", color: "#666", fontSize: "15px" }}>
+          第 {currentPage} / {totalPages} 页
+        </span>
+
+        <button
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          style={{ padding: "10px 18px", borderRadius: "8px", border: "1px solid #ddd", backgroundColor: currentPage === totalPages ? "#f5f5f5" : "white" }}
+        >
+          下一页
+        </button>
+        <button
+          onClick={() => goToPage(totalPages)}
+          disabled={currentPage === totalPages}
+          style={{
+            padding: "10px 18px",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+            backgroundColor: currentPage === totalPages ? "#f5f5f5" : "white",
+            cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+            opacity: currentPage === totalPages ? 0.5 : 1,
+          }}
+        >
+          末页
+        </button>
+      </div>
+    </div>
+  )
+}
+
+<FundingChannelTable />
+
+
