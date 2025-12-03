@@ -1230,6 +1230,9 @@ components:
             - payMode
             - merchantOrderTime
             - merchantRegion
+            - transTimeout
+            - carrierId
+            - goodsName
       x-User: null
     CheckoutPay:
       title: Pay
