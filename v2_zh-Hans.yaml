@@ -2227,6 +2227,8 @@ components:
           description: "订单状态(见补充说明)\t"
           examples:
             - PENDING
+            - SUCCESS
+            - FAIL
         traceId:
           type: string
           description: "请求消息唯一标识。traceId为本次调用产生的流水号，接口调用异常，可以提供此流水号用于排查问题。\t"
