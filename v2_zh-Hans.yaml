@@ -1304,7 +1304,9 @@ components:
               goodsName: 单品惠-6
               goodsCategory: '1001'
               goodsQuantity: '100'
-              goodsUnitAmount: '100.01'
+              goodsUnitAmount: 
+                currency: php
+                value: '100.01'
           store:
             storeTerminalId: '0001'
           browserInfo:
@@ -2028,17 +2030,27 @@ components:
           examples:
             - '100'
         goodsUnitAmount:
-          type: string
-          description: "金额信息\t"
-          examples:
-            - '100.01'
+          type: object
+          description: "商品单价\t"
+          properties:
+            currency:
+              type: string
+              description: "币种\t"
+              examples:
+                - php
+            value:
+              type: string
+              description: "金额\t"
+              examples:
+                - '100.01'
+          
       x-examples:
         Example 1:
           referenceGoodsId: string
           goodsName: string
           goodsCategory: string
           goodsQuantity: string
-          goodsUnitAmount: string
+          goodsUnitAmount: object
     Store:
       type: object
       title: Store
