@@ -1275,30 +1275,30 @@ components:
           reqReserved: reqReserved
           reserved: reserved
           buyerId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
-          address:
-            zipCode: '344104'
-            region: US
-            city: ShangHai
-            state: ShangHai
-            phone: '18817536697'
-            email: string
-            address1: Lou Lan street
-            address2: Lou Lan street 2
-          customer:
-            address:
-              zipCode: '344104'
-              region: US
-              city: ShangHai
-              state: ShangHai
-              phone: '18817536697'
-              email: string
-              address1: Lou Lan street
-              address2: Lou Lan street 2
-            certificate:
-              number: string
-              type: string
+          # address:
+          #   zipCode: '344104'
+          #   region: US
+          #   city: ShangHai
+          #   state: ShangHai
+          #   phone: '18817536697'
+          #   email: string
+          #   address1: Lou Lan street
+          #   address2: Lou Lan street 2
+          # customer:
+          #   address:
+          #     zipCode: '344104'
+          #     region: US
+          #     city: ShangHai
+          #     state: ShangHai
+          #     phone: '18817536697'
+          #     email: string
+          #     address1: Lou Lan street
+          #     address2: Lou Lan street 2
+          #   certificate:
+          #     number: string
+          #     type: string
           subMerchantId: string
-          userAgent: string
+          # userAgent: string
           goods:
             - referenceGoodsId: M1006
               goodsName: 单品惠-6
@@ -1307,8 +1307,8 @@ components:
               goodsUnitAmount: 
                 currency: php
                 value: '100.01'
-          store:
-            storeTerminalId: '0001'
+          # store:
+          #   storeTerminalId: '0001'
           browserInfo:
             acceptHeader: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
             javaEnabled: 'true'
@@ -1505,20 +1505,20 @@ components:
               description: 商户用户ID(支付渠道为BRAZIL_PIX必传)
               examples:
                 - oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
-            address:
-              $ref: '#/components/schemas/Address'
-            customer:
-              $ref: '#/components/schemas/Customer'
+            # address:
+            #   $ref: '#/components/schemas/Address'
+            # customer:
+            #   $ref: '#/components/schemas/Customer'
             subMerchantId:
               type: string
-            userAgent:
-              type: string
+            # userAgent:
+            #   type: string
             goods:
               type: array
               items:
                 $ref: '#/components/schemas/Goods'
-            store:
-              $ref: '#/components/schemas/Store'
+            # store:
+            #   $ref: '#/components/schemas/Store'
             browserInfo:
               $ref: '#/components/schemas/BrowserInfo'
             shippingInfo:
