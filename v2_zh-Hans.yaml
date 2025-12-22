@@ -1098,7 +1098,7 @@ components:
           transAmt: "5.67"
           currency: USD
           merchantOrderId: "商户订单号"
-          merchantOrderTime: "商户订单时间"
+          merchantOrderTime: "2025-10-24T15:00:00.500+08:00"
           goodsName: "商品名称,多个商品 用\";\"隔开"
           carrierId: "测试"
           deviceChannel: "PC/IOS/Android"
@@ -1214,8 +1214,9 @@ components:
                 - QRCODE
             merchantOrderTime:
               type: string
-              description: 商户订单时间
+              description: 请求时间（ISO 8601 格式，带时区）
               format: date-time
+              example: "2025-10-24T15:00:00.500+08:00"
             merchantRegion:
               type: string
               description: 商户所在地区
@@ -1266,7 +1267,7 @@ components:
             firstName: Bren
             lastName: Qiu
             phone: '18817536697'
-          merchantOrderTime: '2019-08-24T14:15:22Z'
+          merchantOrderTime: '2025-10-24T15:00:00.500+08:00'
           osType: IOS
           merchantRegion: US
           authCode: '133788758877188822'
@@ -1463,8 +1464,9 @@ components:
               $ref: '#/components/schemas/PayMethodInfo'
             merchantOrderTime:
               type: string
-              description: 商户订单时间
+              description: 请求时间（ISO 8601 格式，带时区）
               format: date-time
+              example: "2025-10-24T15:00:00.500+08:00"
             osType:
               type: string
               description: 手机操作系统类型(支付类型为APP时必传)
