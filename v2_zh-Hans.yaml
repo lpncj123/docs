@@ -1528,7 +1528,6 @@ components:
             billingInfo:
               $ref: '#/components/schemas/BillingInfo'
           required:
-            - transChannel
             - currency
             - transAmt
             - merchantOrderId
