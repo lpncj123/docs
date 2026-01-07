@@ -1155,7 +1155,7 @@ components:
                 - QRPH
                 - BANK_TRANSFER
                 - KOREAN_CARDS
-              description: 支付渠道
+              description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
             transTimeout:
               type: string
               description: '订单有效时长(整数格式 单位:分钟)'
@@ -1393,7 +1393,7 @@ components:
                 - QRPH
                 - BANK_TRANSFER
                 - KOREAN_CARDS
-              description: 支付渠道
+              description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
             transTimeout:
               type: string
               description: '订单有效时长(整数格式 单位:分钟)'
