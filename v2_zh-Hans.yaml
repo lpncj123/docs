@@ -1208,7 +1208,6 @@ components:
                 - FIXEDCODE
               description: |
                 交易类型
-                更多描述参考 [支付方式](api#/#支付方式)
               default: QRCODE
               examples:
                 - QRCODE
@@ -1456,7 +1455,7 @@ components:
                 - FIXEDCODE
               description: |
                 交易类型
-                更多描述参考 [支付方式](api#/#支付方式)
+                
               default: QRCODE
               examples:
                 - QRCODE
