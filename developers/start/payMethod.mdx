@@ -1,477 +1,17 @@
 ---
-title: 支付方式列表
+title: 支付渠道列表
 sidebar_position: 1
 ---
 
 import React, { useState } from "react";
 export const FundingChannelTable = () => {
-  const fundingChannels = [
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "HK",
-    "currency": "HKD",
-    "min_amount": "1.00",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "CN",
-    "currency": "USD",
-    "min_amount": "1.00",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "HK",
-    "currency": "CNY",
-    "min_amount": "1.00",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "HK",
-    "currency": "CNY",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "alipaycn",
-    "country": "HK",
-    "currency": "CNY",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "kakaopay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "10000000000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "naver_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "10000000000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "CN",
-    "currency": "HKD",
-    "min_amount": "1.00",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "CN",
-    "currency": "CNY",
-    "min_amount": "1.00",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "HK",
-    "currency": "USD",
-    "min_amount": "1.00",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "alipaycn",
-    "country": "CN",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "alipaycn",
-    "country": "CN",
-    "currency": "HKD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "alipayhk",
-    "country": "HK",
-    "currency": "HKD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "alipayhk",
-    "country": "HK",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "gcash",
-    "country": "PH",
-    "currency": "PHP",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "gcash",
-    "country": "PH",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "kakaopay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "kakaopay",
-    "country": "KR",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "naver_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "naver_pay",
-    "country": "KR",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "toss_pay",
-    "country": "KR",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "toss_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "toss_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "10000000000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "payco",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "10000000000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "bpi",
-    "country": "PH",
-    "currency": "PHP",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "bpi",
-    "country": "PH",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "billease",
-    "country": "PH",
-    "currency": "PHP",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "billease",
-    "country": "PH",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "truemoney",
-    "country": "TH",
-    "currency": "THB",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "truemoney",
-    "country": "TH",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "rabbit_line_pay",
-    "country": "TH",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "rabbit_line_pay",
-    "country": "TH",
-    "currency": "THB",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "payco",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "payco",
-    "country": "KR",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "tng",
-    "country": "MY",
-    "currency": "MYR",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "tng",
-    "country": "MY",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "boost",
-    "country": "MY",
-    "currency": "USD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "boost",
-    "country": "MY",
-    "currency": "MYR",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "dana",
-    "country": "ID",
-    "currency": "IDR",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "wechatpay",
-    "country": "HK",
-    "currency": "HKD",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "kakaopay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "naver_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "toss_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "payco",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "0.01",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "qrph",
-    "country": "PH",
-    "currency": "PHP",
-    "min_amount": "200.00",
-    "max_amount": "10000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "kakaopay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "100000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "naver_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "100000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "payco",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "100000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "WALLET",
-    "target_org": "toss_pay",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "100000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "BANK_TRANSFER",
-    "target_org": "bank_transfer",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "100000.00",
-    "expire_time": 60
-  },
-  {
-    "product_code": "KOREAN_CARDS",
-    "target_org": "korean_cards",
-    "country": "KR",
-    "currency": "KRW",
-    "min_amount": "100.00",
-    "max_amount": "100000.00",
-    "expire_time": 60
-  }
-]
-  const filterArrays = ["country", "currency", "target_org","product_code"];
+  const fundingChannels = [{"productCode":"WALLET","targetOrg":"WEIXIN","country":"HK","currency":"HKD","minAmount":"3","maxAmount":"11000"},{"productCode":"WALLET","targetOrg":"WEIXIN","country":"CN","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"WEIXIN","country":"HK","currency":"CNY","minAmount":"3","maxAmount":"10000"},{"productCode":"WALLET","targetOrg":"WEIXIN","country":"HK","currency":"CNY","minAmount":"3","maxAmount":"10000"},{"productCode":"WALLET","targetOrg":"ALIPAY_CN","country":"HK","currency":"CNY","minAmount":"3","maxAmount":"10000"},{"productCode":"WALLET","targetOrg":"KAKAOPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"NAVERPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"WEIXIN","country":"CN","currency":"GHS","minAmount":"1.00","maxAmount":"10000.00"},{"productCode":"WALLET","targetOrg":"WEIXIN","country":"CN","currency":"CNY","minAmount":"3","maxAmount":"10000"},{"productCode":"WALLET","targetOrg":"WEIXIN","country":"HK","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"ALIPAY_CN","country":"CN","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"ALIPAY_CN","country":"CN","currency":"HKD","minAmount":"3","maxAmount":"11000"},{"productCode":"WALLET","targetOrg":"ALIPAY_HK","country":"HK","currency":"HKD","minAmount":"3","maxAmount":"11000"},{"productCode":"WALLET","targetOrg":"ALIPAY_HK","country":"HK","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"GCASH","country":"PH","currency":"PHP","minAmount":"10","maxAmount":"80000"},{"productCode":"WALLET","targetOrg":"GCASH","country":"PH","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"KAKAOPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"KAKAOPAY","country":"KR","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"NAVERPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"NAVERPAY","country":"KR","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"TOSSPAY","country":"KR","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"TOSSPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"TOSSPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"PAYCO","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"BPI","country":"PH","currency":"PHP","minAmount":"10","maxAmount":"80000"},{"productCode":"WALLET","targetOrg":"BPI","country":"PH","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"BILLEASE","country":"PH","currency":"PHP","minAmount":"10","maxAmount":"80000"},{"productCode":"WALLET","targetOrg":"BILLEASE","country":"PH","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"TRUEMONEY","country":"TH","currency":"THB","minAmount":"5","maxAmount":"50000"},{"productCode":"WALLET","targetOrg":"TRUEMONEY","country":"TH","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"RABBIT_LINE_PAY","country":"TH","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"RABBIT_LINE_PAY","country":"TH","currency":"THB","minAmount":"5","maxAmount":"50000"},{"productCode":"WALLET","targetOrg":"PAYCO","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"PAYCO","country":"KR","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"TNG","country":"MY","currency":"MYR","minAmount":"1","maxAmount":"6500"},{"productCode":"WALLET","targetOrg":"TNG","country":"MY","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"BOOST","country":"MY","currency":"USD","minAmount":"0.5","maxAmount":"1500"},{"productCode":"WALLET","targetOrg":"BOOST","country":"MY","currency":"MYR","minAmount":"1","maxAmount":"6500"},{"productCode":"WALLET","targetOrg":"DANA","country":"ID","currency":"IDR","minAmount":"2200","maxAmount":"22000000"},{"productCode":"WALLET","targetOrg":"WEIXIN","country":"HK","currency":"HKD","minAmount":"3","maxAmount":"11000"},{"productCode":"WALLET","targetOrg":"KAKAOPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"NAVERPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"PAYCO","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"TOSSPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"KAKAOPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"NAVERPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"PAYCO","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"TOSSPAY","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"BANK_TRANSFER","targetOrg":"BANK_TRANSFER","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"},{"productCode":"WALLET","targetOrg":"QRPH","country":"PH","currency":"PHP","minAmount":"10","maxAmount":"80000"},{"productCode":"KOREAN_CARDS","targetOrg":"KOREAN_CARDS","country":"KR","currency":"KRW","minAmount":"200","maxAmount":"2000000"}]
+  const filterArrays = ["country", "currency", "targetOrg","productCode"];
   const [filters, setFilters] = useState({
     country: "",
     currency: "",
-    target_org: "",
-    product_code: ""
+    targetOrg: "",
+    productCode: ""
   });
   
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -480,8 +20,8 @@ export const FundingChannelTable = () => {
     return (
       (filters.country === "" || item.country === filters.country) &&
       (filters.currency === "" || item.currency === filters.currency) &&
-      (filters.target_org === "" || item.target_org === filters.target_org)&&
-      (filters.product_code === "" || item.product_code === filters.product_code)
+      (filters.targetOrg === "" || item.targetOrg === filters.targetOrg)&&
+      (filters.productCode === "" || item.productCode === filters.productCode)
     );
   });
   const ITEMS_PER_PAGE = 10;
@@ -505,7 +45,7 @@ export const FundingChannelTable = () => {
         {filterArrays.map(key => (
           <div key={key}>
              <label style={{ display: "block", marginBottom: "6px", fontSize: "14px", fontWeight: "600" }}>
-              {key === "country" ? "国家" : key === "currency" ? "币种" : key === "target_org" ? "目标机构" : "产品代码"}
+              {key === "country" ? "国家" : key === "currency" ? "币种" : key === "targetOrg" ? "目标机构" : "支付方式类型"}
             </label>
             <select 
               value={filters[key]}
@@ -528,7 +68,7 @@ export const FundingChannelTable = () => {
 
         ))}
         <button
-          onClick={() => { setFilters({ country: "", currency: "", target_org: "", product_code: "" }); setCurrentPage(1); }}
+          onClick={() => { setFilters({ country: "", currency: "", targetOrg: "", productCode: "" }); setCurrentPage(1); }}
           style={{ padding: "10px 16px", borderRadius: "6px", border: "1px solid #ddd", backgroundColor: "#f9f9f9" }}
         >
           重置
@@ -556,7 +96,6 @@ export const FundingChannelTable = () => {
             <th style={{ padding: "16px", textAlign: "left" }}>币种</th>
             <th style={{ padding: "16px", textAlign: "left" }}>最小金额</th>
             <th style={{ padding: "16px", textAlign: "left" }}>最大金额</th>
-            <th style={{ padding: "16px", textAlign: "left" }}>过期时间</th>
 
           </tr>
         </thead>
@@ -581,7 +120,7 @@ export const FundingChannelTable = () => {
                   onMouseEnter={() => setActiveRow(index)}
                   onMouseLeave={() => setActiveRow(null)}
                 >
-                  <strong>{item.product_code}</strong>
+                  <strong>{item.productCode}</strong>
 
 
                   <div style={{
@@ -620,7 +159,7 @@ export const FundingChannelTable = () => {
                   </div>
                 </td>
               <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
-                {item.target_org}
+                {item.targetOrg}
               </td>
               <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
                 {item.country}
@@ -629,14 +168,12 @@ export const FundingChannelTable = () => {
                 {item.currency}
               </td>
               <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
-                {item.min_amount}
+                {item.minAmount}
               </td>
               <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
-                {item.max_amount}
+                {item.maxAmount}
               </td>
-              <td style={{ padding: "16px", borderBottom: "1px solid #e9ecef" }}>
-                {item.expire_time}
-              </td>
+
             </tr>
           ))}
         </tbody>
