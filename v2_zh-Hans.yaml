@@ -1547,7 +1547,10 @@ components:
             # customer:
             #   $ref: '#/components/schemas/Customer'
             subMerchantId:
+              description: 	商户子商户号
               type: string
+              examples:
+                - '20230424141154'
             # userAgent:
             #   type: string
             goods:
