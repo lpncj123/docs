@@ -71,7 +71,7 @@ paths:
       tags:
         - 收单
       summary: 消费-收银台
-      description: 发起消费交易，消费成功时会产生实际扣款。    
+      description: 发起消费交易，消费成功时会产生实际扣款。本接口用于收银台支付交易请求。    
       operationId: post-api-mapi-v1-payments-open-api-cashier
       requestBody:
         content:
@@ -85,26 +85,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PayResponse'
+        '400':
+          description: Bad Request（请求参数错误、校验失败等）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'  
               examples:
-                Example 1:
+                参数缺失或格式错误:
                   value:
-                    isSuccess: true
-                    errCode: string
-                    errMessage: string
-                    status: string
-                    traceId: string
-                    data:
-                      orderId: string
-                      merchantNo: string
-                      merchantOrderId: string
-                      currency: string
-                      payMethodResponse:
-                        isRedirect: string
-                        redirectMethod: string
-                        termUrl: string
-                        redirectParam: {}
-                        codeUrl: string
-                      transAmt: string
+                    isSuccess: false
+                    errCode: "00000002"
+                    errMessage: "必填参数 merchantOrderId 缺失"
+                    status: "FAIL"
+                    traceId: "33fae7b7aed1233f"
+        '401':
+          description: Bad Request（请求参数错误、校验失败等）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'  
+              examples:
+                签名验证失败:
+                  value:
+                    isSuccess: false
+                    errCode: "00000002"
+                    errMessage: "签名验证失败"
+                    status: "FAIL"
+                    traceId: "33fae7b7aed1233f"
+              # examples:
+              #   Example 1:
+              #     value:
+              #       isSuccess: true
+              #       errCode: string
+              #       errMessage: string
+              #       status: string
+              #       traceId: string
+              #       data:
+              #         orderId: string
+              #         merchantNo: string
+              #         merchantOrderId: string
+              #         currency: string
+              #         payMethodResponse:
+              #           isRedirect: string
+              #           redirectMethod: string
+              #           termUrl: string
+              #           redirectParam: {}
+              #           codeUrl: string
+              #         transAmt: string
       security:
         - signature: []
       servers:
@@ -782,12 +810,14 @@ components:
     signature:
       type: apiKey
       description: |-
+        Example: MIIEpQIBAAKCAQEA...（Base64编码的签名字符串）
         ## 加签
         加签是开放平台和商户对于交互消息完整性的校验。加签行为主要发生两个部分：
         1. 商户服务器端针对向PayAllGlobal开放平台发送的请求报文进行加签；
         2. PayAllGlobal开放平台针对通知商户的异步消息进行加签。
         PayAllGlobal平台要求使用 RSA 私钥进行加签， 使用 RSA 公钥进行验签。 因此，在以上两部分描述的交互中， 存在商户公私钥、PayAllGlobal 公私钥，开发者需要使用商户私钥，对第一部分报文进行加签，使用 PayAllGlobal 公钥对第二部分消息进行验签。
         ### 加签规则如下: 
+        使用商户私钥对请求体进行 SHA256withRSA 签名后，再进行 Base64 编码的结果。
         1. 使用 商户私钥对待 `request.body` 进行签名（SHA256WithRSA 计算原始数据的SHA-256哈希值。 使用私钥对哈希值进行签名，即使用私钥对哈希值进行RSA加密。此时得到的加密结果就是数字签名。）；
         ```java
         Signature signature = Signature.getInstance("SHA256withRSA");
@@ -1093,11 +1123,11 @@ components:
           transType: PAY
           accessType: s2s
           signType: RSA
-          merchantId: 商户号
+          merchantId: '2023010558663764'
           transChannel: ALIPAY_CN
           transAmt: "5.67"
           currency: USD
-          merchantOrderId: "商户订单号"
+          merchantOrderId: '20230424141154'
           merchantOrderTime: "2025-10-24T15:00:00.500+08:00"
           goodsName: "商品名称,多个商品 用\";\"隔开"
           carrierId: "测试"
@@ -1247,7 +1277,7 @@ components:
           threeDsType: '2.0'
           deviceChannel: string
           transChannel: WEIXIN
-          transTimeout: string
+          # transTimeout: '10'
           carrierId: carrierId
           currency: USD
           transAmt: '20.01'
@@ -1354,58 +1384,63 @@ components:
             transChannel:
               type: string
               enum:
-                - WEIXIN
-                - UNIONPAY
-                - ALIPAY_CN
-                - ALIPAY_HK
-                - GCASH
-                - BPI
-                - TNG
-                - BOOST
-                - DANA
-                - KAKAOPAY
-                - TRUEMONEY
-                - BRAZIL_PIX
-                - Ewallet_PicPay
-                - Khipu
-                - RABBIT_LINE_PAY
-                - ALIPAY_INSTORE
-                - NAVERPAY
-                - TOSSPAY
-                - MAYA
-                - BILLEASE
-                - GoPay
-                - OVO
-                - DOKU
-                - Dragonpay
-                - Konbini
-                - PayEasy
-                - GrabPay
-                - PAYCO
-                - MPAY
-                - PROMPT_PAY
-                - HIPAY
-                - TINABA
-                - KREDIVO_ID
-                - AKULAKU_PAYLATER
-                - KPLUS
-                - QRPH
-                - BANK_TRANSFER
-                - KOREAN_CARDS
+                - "WEIXIN: 微信支付"
+                - "UNIONPAY: 银联"
+                - "ALIPAY_CN: 支付宝（大陆）"
+                - "ALIPAY_HK: 支付宝（香港）"
+                - "GCASH: GCash"
+                - "BPI: BPI"
+                - "TNG: Touch 'n Go"
+                - "BOOST: Boost"
+                - "DANA: DANA"
+                - "KAKAOPAY: KakaoPay"
+                - "TRUEMONEY: TrueMoney"
+                - "BRAZIL_PIX: PIX"
+                - "Ewallet_PicPay: PicPay"
+                - "Khipu: Khipu"
+                - "RABBIT_LINE_PAY: Rabbit LINE Pay"
+                - "ALIPAY_INSTORE: 支付宝扫码支付"
+                - "NAVERPAY: Naver Pay"
+                - "TOSSPAY: Toss Pay"
+                - "MAYA: Maya"
+                - "BILLEASE: Billease"
+                - "GoPay: GoPay"
+                - "OVO: OVO"
+                - "DOKU: DOKU"
+                - "Dragonpay: Dragonpay"
+                - "Konbini: 便利店支付"
+                - "PayEasy: PayEasy"
+                - "GrabPay: GrabPay"
+                - "PAYCO: PAYCO"
+                - "MPAY: mPAY"
+                - "PROMPT_PAY: PromptPay"
+                - "HIPAY: HiPay"
+                - "TINABA: Tinaba"
+                - "KREDIVO_ID: Kredivo"
+                - "AKULAKU_PAYLATER: Akulaku PayLater"
+                - "KPLUS: K PLUS"
+                - "QRPH: QRPH"
+                - "BANK_TRANSFER: 银行转账"
+                - "KOREAN_CARDS: 韩国信用卡"
               description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
-            transTimeout:
-              type: string
-              description: '订单有效时长(整数格式 单位:分钟)'
+            # transTimeout:
+            #   type: string
+            #   description: '订单有效时长，正整数字符串格式 单位为分钟'
+  
             carrierId:
               type: string
-              description: 发生交易的网站域名或者APP名称
+              description: 	发生交易的网站域名或者APP名称,示例值(跨境)
               examples:
-                - carrierId
+                - '跨境'
             currency:
               type: string
               description: '订单币种[ISO4217](https://www.iso.org/standard/46121.html)币种的字母码 eg. USD, CNY, EUR'
+              minLength: 3
+              maxLength: 3
               examples:
                 - USD
+              
+              
             transAmt:
               type: string
               description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110【创建token快捷支付时，金额为0代表只创建令牌，非0代表创建令牌并支付】
@@ -1413,9 +1448,9 @@ components:
                 - '20.01'
             goodsName:
               type: string
-              description: "商品名称,多个商品 用\";\"隔开\t"
+              description: "商品或订单的名称,多个名称之间用\";\"隔开\t"
               examples:
-                - Iphone15
+                - "Iphone15;Macbook Pro"
             dcc:
               type: string
               description: 交易是否走DCC 传送：dcc
@@ -1430,11 +1465,12 @@ components:
             redirectUrl:
               type: string
               description: 前台回调地址
+              format: uri
               examples:
                 - 'http://www.gogole.com'
             merchantOrderId:
               type: string
-              description: 商户订单号
+              description: 商户订单号，商户生成的唯一订单号。
               examples:
                 - '20230424141154'
             customerIp:
@@ -1445,14 +1481,14 @@ components:
             payMode:
               type: string
               enum:
-                - QRCODE
-                - MICROPAY
-                - JSAPI
-                - MINIPROGRAM
-                - APP
-                - H5
-                - 3D
-                - FIXEDCODE
+                - "QRCODE: 二维码支付"
+                - "MICROPAY: 付款码支付（刷码支付）"
+                - "JSAPI: 公众号支付（JSAPI）"
+                - "MINIPROGRAM: 小程序支付"
+                - "APP: App 支付"
+                - "H5: H5 支付（网页支付）"
+                - "3D: 3D 验证支付"
+                - "FIXEDCODE: 固定码支付"
               description: |
                 交易类型
                 
@@ -1473,7 +1509,7 @@ components:
                 - IOS
             merchantRegion:
               type: string
-              description: 商户所在地区
+              description: 商户所在地区国家代码
               examples:
                 - US
             authCode:
@@ -1612,41 +1648,42 @@ components:
         transType:
           type: string
           enum:
-            - PAY
-            - CREDIT_CARD
-            - 3D_PREAUTH_VOIDS
-            - 3D_PREAUTH_COMPLETION
-            - REFUND
-            - VOIDS
-            - QUERY
-            - TRANSFER
-            - DOWNLOAD
-            - REGISTRATION
-            - FILEUPLOAD
-            - INQUIRYREGISTRATIONSTATUS
-            - AUTHORIZE
-            - CASHIER_PAY
+            - "PAY: 消费支付"
+            - "CREDIT_CARD: 信用卡支付"
+            - "3D_PREAUTH_VOIDS: 3D 预授权撤销"
+            - "3D_PREAUTH_COMPLETION: 3D 预授权完成"
+            - "REFUND: 退款"
+            - "VOIDS: 撤销"
+            - "QUERY: 查询"
+            - "TRANSFER: 转账"
+            - "DOWNLOAD: 文件下载"
+            - "REGISTRATION: 商户注册"
+            - "FILEUPLOAD: 文件上传"
+            - "INQUIRYREGISTRATIONSTATUS: 查询注册状态"
+            - "AUTHORIZE: 授权"
+            - "CASHIER_PAY: 收银台支付"
           description: 交易类型
           default: PAY
         accessType:
           type: string
-          description: "接口访问类型\t"
+          description: "接口接入类型，固定为服务端到服务端(s2s)模式"
           default: s2s
           examples:
             - s2s
         signType:
           type: string
-          description: 报文签名类型
+          default: RSA
+          description: 报文签名类型，当前支持RSA。
           examples:
             - RSA
         memberId:
           type: string
-          description: "机构号\t"
+          description: "机构号，商户侧唯一标识"
           examples:
             - '2023010558663764'
         merchantId:
           type: string
-          description: "商户号\t"
+          description: "商户号，商户唯一标识"
           examples:
             - '2023010558663764'
       required:
@@ -2127,7 +2164,7 @@ components:
           data:
             orderId: TR1658354573473091584
             merchantNo: '2023010558663764'
-            merchantOrderId: string
+            merchantOrderId: '20230424141154'
             currency: USD
             transAmt: '100.01'
             payMethodResponse:
@@ -2223,7 +2260,9 @@ components:
       properties:
         isSuccess:
           type: boolean
-          description: "是否成功\t"
+          description: "是否成功，true表示成功，false表示失败\t"
+          examples:
+            - true
         errCode:
           type: string
           description: "响应状态码，errCode为00000000表示响应成功，其他状态码表示响应失败。具体系统错误码可以参考系统错误码。\t"
@@ -2238,9 +2277,9 @@ components:
           type: string
           description: "订单状态(见补充说明)\t"
           examples:
-            - PENDING
-            - SUCCESS
-            - FAIL
+            - "PENDING：处理中"
+            - "SUCCESS：成功"
+            - "FAIL：失败"
         traceId:
           type: string
           description: "请求消息唯一标识。traceId为本次调用产生的流水号，接口调用异常，可以提供此流水号用于排查问题。\t"
