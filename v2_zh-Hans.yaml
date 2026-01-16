@@ -1481,7 +1481,7 @@ components:
             payMode:
               type: string
               enum:
-                - "QRCODE: 二维码支付"
+                - "QRCODE: 二维码支付1"
                 - "MICROPAY: 付款码支付（刷码支付）"
                 - "JSAPI: 公众号支付（JSAPI）"
                 - "MINIPROGRAM: 小程序支付"
