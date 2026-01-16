@@ -1434,7 +1434,7 @@ components:
                 - 10
             carrierId:
               type: string
-              description: 	发生交易的网站域名或者APP名称,示例值(跨境)
+              description: 发生交易的网站域名或者APP名称,示例值(跨境)
               examples:
                 - '跨境'
             currency:
@@ -1554,7 +1554,7 @@ components:
             # customer:
             #   $ref: '#/components/schemas/Customer'
             subMerchantId:
-              description: 	商户子商户号
+              description: 商户子商户号
               type: string
               examples:
                 - '20230424141154'
