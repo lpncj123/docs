@@ -1187,13 +1187,15 @@ components:
                 - KOREAN_CARDS
               description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
             transTimeout:
-              type: string
+              type: integer(int64)
               description: '订单有效时长(整数格式 单位:分钟)'
+              examples:
+                - 20
             carrierId:
               type: string
               description: 发生交易的网站域名或者APP名称
               examples:
-                - carrierId
+                - 跨境
             currency:
               type: string
               description: '订单币种[ISO4217](https://www.iso.org/standard/46121.html)币种的字母码 eg. USD, CNY, EUR'
@@ -1274,20 +1276,20 @@ components:
           signType: RSA
           memberId: '2023010558663764'
           merchantId: '2023010558663764'
-          threeDsType: '2.0'
-          deviceChannel: string
+          # threeDsType: '2.0'
+          deviceChannel: Brower
           transChannel: WEIXIN
-          # transTimeout: '10'
-          carrierId: carrierId
+          transTimeout: 10
+          carrierId: '跨境'
           currency: USD
           transAmt: '20.01'
           goodsName: Iphone15
-          dcc: DCC
-          notifyUrl: 'http://example.com'
-          redirectUrl: 'http://www.gogole.com'
+          dcc: dcc
+          notifyUrl: 'https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/payments/open/api/unionPayTest1111'
+          redirectUrl: 'https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/payments/open/api/unionPayTest'
           merchantOrderId: '20230424141154'
           customerIp: 18.277.26.154
-          payMode: QRCODE
+          # payMode: QRCODE
           payMethodInfo:
             cardNo: 444433******1111
             expirationMonth: '01'
@@ -1304,7 +1306,7 @@ components:
           openId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
           reqReserved: reqReserved
           reserved: reserved
-          buyerId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
+          # buyerId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
           # address:
           #   zipCode: '344104'
           #   region: US
@@ -1339,16 +1341,16 @@ components:
                 value: '100.01'
           # store:
           #   storeTerminalId: '0001'
-          browserInfo:
-            acceptHeader: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
-            javaEnabled: 'true'
-            language: en-US
-            colorDepth: '160'
-            screenHeight: '1024'
-            screenWidth: '648'
-            browserTz: string
-            browserIp: 8.8.8.8
-            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+          # browserInfo:
+          #   acceptHeader: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+          #   javaEnabled: 'true'
+          #   language: en-US
+          #   colorDepth: '160'
+          #   screenHeight: '1024'
+          #   screenWidth: '648'
+          #   browserTz: string
+          #   browserIp: 8.8.8.8
+          #   userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
           shippingInfo:
             firstName: "James"
             lastName: "Smith"
@@ -1373,14 +1375,16 @@ components:
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
-            threeDsType:
-              type: string
-              description: 使用3d交易必传(示例值 1.0 2.0)
-              examples:
-                - '2.0'
+            # threeDsType:
+            #   type: string
+            #   description: 使用3d交易必传(示例值 1.0 2.0)
+            #   examples:
+            #     - '2.0'
             deviceChannel:
               type: string
               description: 设备渠道
+              examples:
+                - Brower
             transChannel:
               type: string
               enum:
@@ -1423,10 +1427,11 @@ components:
                 - "BANK_TRANSFER: 银行转账"
                 - "KOREAN_CARDS: 韩国信用卡"
               description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
-            # transTimeout:
-            #   type: string
-            #   description: '订单有效时长，正整数字符串格式 单位为分钟'
-  
+            transTimeout:
+              type: integer(int64)
+              description: '订单有效时长(整数格式 单位:分钟),示例值(10)'
+              examples:
+                - 10
             carrierId:
               type: string
               description: 	发生交易的网站域名或者APP名称,示例值(跨境)
@@ -1455,19 +1460,21 @@ components:
               type: string
               description: 交易是否走DCC 传送：dcc
               examples:
-                - DCC
+                - dcc
             notifyUrl:
               type: string
               description: 异步通知地址
               format: uri
               minLength: 10
               maxLength: 200
+              examples:
+                - 'https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/payments/open/api/unionPayTest1111'
             redirectUrl:
               type: string
               description: 前台回调地址
               format: uri
               examples:
-                - 'http://www.gogole.com'
+                - 'https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/payments/open/api/unionPayTest'
             merchantOrderId:
               type: string
               description: 商户订单号，商户生成的唯一订单号。
@@ -1478,23 +1485,23 @@ components:
               description: 用户ip
               examples:
                 - 18.277.26.154
-            payMode:
-              type: string
-              enum:
-                - "QRCODE: 二维码支付"
-                - "MICROPAY: 付款码支付（刷码支付）"
-                - "JSAPI: 公众号支付（JSAPI）"
-                - "MINIPROGRAM: 小程序支付"
-                - "APP: App 支付"
-                - "H5: H5 支付（网页支付）"
-                - "3D: 3D 验证支付"
-                - "FIXEDCODE: 固定码支付"
-              description: |
-                交易类型
+            # payMode:
+            #   type: string
+            #   enum:
+            #     - "QRCODE: 二维码支付"
+            #     - "MICROPAY: 付款码支付（刷码支付）"
+            #     - "JSAPI: 公众号支付（JSAPI）"
+            #     - "MINIPROGRAM: 小程序支付"
+            #     - "APP: App 支付"
+            #     - "H5: H5 支付（网页支付）"
+            #     - "3D: 3D 验证支付"
+            #     - "FIXEDCODE: 固定码支付"
+            #   description: |
+            #     交易类型
                 
-              default: QRCODE
-              examples:
-                - QRCODE
+            #   default: QRCODE
+            #   examples:
+            #     - QRCODE
             payMethodInfo:
               $ref: '#/components/schemas/PayMethodInfo'
             merchantOrderTime:
@@ -1529,19 +1536,19 @@ components:
                 - oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
             reqReserved:
               type: string
-              description: 商户扩展字段
+              description: 商户备注扩展字段
               examples:
-                - reqReserved
+                - 备注扩展
             reserved:
               type: string
-              description: 保留字段
+              description: 备注字段
               examples:
-                - reserved
-            buyerId:
-              type: string
-              description: 商户用户ID(支付渠道为BRAZIL_PIX必传)
-              examples:
-                - oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
+                - 备注
+            # buyerId:
+            #   type: string
+            #   description: 商户用户ID(支付渠道为BRAZIL_PIX必传)
+            #   examples:
+            #     - oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
             # address:
             #   $ref: '#/components/schemas/Address'
             # customer:
@@ -1559,17 +1566,18 @@ components:
                 $ref: '#/components/schemas/Goods'
             # store:
             #   $ref: '#/components/schemas/Store'
-            browserInfo:
-              $ref: '#/components/schemas/BrowserInfo'
+            # browserInfo:
+            #   $ref: '#/components/schemas/BrowserInfo'
             shippingInfo:
               $ref: '#/components/schemas/ShippingInfo'
             billingInfo:
               $ref: '#/components/schemas/BillingInfo'
           required:
+            - transTimeout
+            - carrierId
             - currency
             - transAmt
             - merchantOrderId
-            - payMode
             - merchantOrderTime
             - merchantRegion
       x-User: null
@@ -4097,6 +4105,9 @@ components:
           description: 账单人手机号
           maxLength: 32
           example: "13800138000"
+        phoneNoRegion:
+          type: string
+          description: 账单人手机号区号
         email:
           type: string
           description: 账单邮箱地址
