@@ -1187,7 +1187,7 @@ components:
                 - KOREAN_CARDS
               description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
             transTimeout:
-              type: integer(int64)
+              type: number
               description: '订单有效时长(整数格式 单位:分钟)'
               examples:
                 - 20
@@ -1428,7 +1428,7 @@ components:
                 - "KOREAN_CARDS: 韩国信用卡"
               description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
             transTimeout:
-              type: integer(int64)
+              type: number
               description: '订单有效时长(整数格式 单位:分钟),示例值(10)'
               examples:
                 - 10
