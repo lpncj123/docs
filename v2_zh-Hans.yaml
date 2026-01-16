@@ -1276,7 +1276,6 @@ components:
           signType: RSA
           memberId: '2023010558663764'
           merchantId: '2023010558663764'
-          # threeDsType: '2.0'
           deviceChannel: Brower
           transChannel: WEIXIN
           transTimeout: 10
@@ -1289,7 +1288,6 @@ components:
           redirectUrl: 'https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/payments/open/api/unionPayTest'
           merchantOrderId: '20230424141154'
           customerIp: 18.277.26.154
-          # payMode: QRCODE
           payMethodInfo:
             cardNo: 444433******1111
             expirationMonth: '01'
@@ -1306,31 +1304,8 @@ components:
           openId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
           reqReserved: reqReserved
           reserved: reserved
-          # buyerId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
-          # address:
-          #   zipCode: '344104'
-          #   region: US
-          #   city: ShangHai
-          #   state: ShangHai
-          #   phone: '18817536697'
-          #   email: string
-          #   address1: Lou Lan street
-          #   address2: Lou Lan street 2
-          # customer:
-          #   address:
-          #     zipCode: '344104'
-          #     region: US
-          #     city: ShangHai
-          #     state: ShangHai
-          #     phone: '18817536697'
-          #     email: string
-          #     address1: Lou Lan street
-          #     address2: Lou Lan street 2
-          #   certificate:
-          #     number: string
-          #     type: string
           subMerchantId: string
-          # userAgent: string
+
           goods:
             - referenceGoodsId: M1006
               goodsName: 单品惠-6
@@ -1339,18 +1314,6 @@ components:
               goodsUnitAmount: 
                 currency: php
                 value: '100.01'
-          # store:
-          #   storeTerminalId: '0001'
-          # browserInfo:
-          #   acceptHeader: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
-          #   javaEnabled: 'true'
-          #   language: en-US
-          #   colorDepth: '160'
-          #   screenHeight: '1024'
-          #   screenWidth: '648'
-          #   browserTz: string
-          #   browserIp: 8.8.8.8
-          #   userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
           shippingInfo:
             firstName: "James"
             lastName: "Smith"
@@ -1375,11 +1338,7 @@ components:
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
-            # threeDsType:
-            #   type: string
-            #   description: 使用3d交易必传(示例值 1.0 2.0)
-            #   examples:
-            #     - '2.0'
+            
             deviceChannel:
               type: string
               description: 设备渠道
@@ -1485,23 +1444,6 @@ components:
               description: 用户ip
               examples:
                 - 18.277.26.154
-            # payMode:
-            #   type: string
-            #   enum:
-            #     - "QRCODE: 二维码支付"
-            #     - "MICROPAY: 付款码支付（刷码支付）"
-            #     - "JSAPI: 公众号支付（JSAPI）"
-            #     - "MINIPROGRAM: 小程序支付"
-            #     - "APP: App 支付"
-            #     - "H5: H5 支付（网页支付）"
-            #     - "3D: 3D 验证支付"
-            #     - "FIXEDCODE: 固定码支付"
-            #   description: |
-            #     交易类型
-                
-            #   default: QRCODE
-            #   examples:
-            #     - QRCODE
             payMethodInfo:
               $ref: '#/components/schemas/PayMethodInfo'
             merchantOrderTime:
@@ -1544,30 +1486,15 @@ components:
               description: 备注字段
               examples:
                 - 备注
-            # buyerId:
-            #   type: string
-            #   description: 商户用户ID(支付渠道为BRAZIL_PIX必传)
-            #   examples:
-            #     - oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
-            # address:
-            #   $ref: '#/components/schemas/Address'
-            # customer:
-            #   $ref: '#/components/schemas/Customer'
             subMerchantId:
               description: 	商户子商户号
               type: string
               examples:
                 - '20230424141154'
-            # userAgent:
-            #   type: string
             goods:
               type: array
               items:
                 $ref: '#/components/schemas/Goods'
-            # store:
-            #   $ref: '#/components/schemas/Store'
-            # browserInfo:
-            #   $ref: '#/components/schemas/BrowserInfo'
             shippingInfo:
               $ref: '#/components/schemas/ShippingInfo'
             billingInfo:
