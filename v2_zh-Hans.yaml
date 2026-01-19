@@ -1278,7 +1278,7 @@ components:
           merchantId: '2023010558663764'
           # threeDsType: '2.0'
           deviceChannel: Brower
-          transChannel: WEIXIN
+          # transChannel: WEIXIN
           transTimeout: 10
           carrierId: '跨境'
           currency: USD
@@ -1288,7 +1288,7 @@ components:
           notifyUrl: 'https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/payments/open/api/unionPayTest1111'
           redirectUrl: 'https://mpgwdev.payallglobal.com/mp-gateway/api/mapi/v1/payments/open/api/unionPayTest'
           merchantOrderId: '20230424141154'
-          customerIp: 18.277.26.154
+          # customerIp: 18.277.26.154
           # payMode: QRCODE
           payMethodInfo:
             cardNo: 444433******1111
@@ -1299,11 +1299,11 @@ components:
             lastName: Qiu
             phone: '18817536699'
           merchantOrderTime: '2025-10-24T15:00:00.500+08:00'
-          osType: IOS
+          # osType: IOS
           merchantRegion: US
-          authCode: '133788758877188822'
-          appId: wxd678efh567hg6787
-          openId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
+          # authCode: '133788758877188822'
+          # appId: wxd678efh567hg6787
+          # openId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
           reqReserved: reqReserved
           reserved: reserved
           # buyerId: oUpF8uMuAJO_M2pxb1Q9zNjWeS6o
@@ -1329,7 +1329,7 @@ components:
           #   certificate:
           #     number: string
           #     type: string
-          subMerchantId: string
+          subMerchantId: '2258484869050'
           # userAgent: string
           goods:
             - referenceGoodsId: M1006
@@ -1444,8 +1444,6 @@ components:
               maxLength: 3
               examples:
                 - USD
-              
-              
             transAmt:
               type: string
               description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110【创建token快捷支付时，金额为0代表只创建令牌，非0代表创建令牌并支付】
