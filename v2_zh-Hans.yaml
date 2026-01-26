@@ -1426,6 +1426,7 @@ components:
                 - "QRPH: QRPH"
                 - "BANK_TRANSFER: 银行转账"
                 - "KOREAN_CARDS: 韩国信用卡"
+                - "CARD: 国际卡支付"
               description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
             transTimeout:
               type: number
