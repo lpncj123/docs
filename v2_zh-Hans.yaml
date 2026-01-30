@@ -1359,6 +1359,7 @@ components:
             address1: "GOLGELI SOKAK NO.34, 06700"
             city: "GAZIOSMANPASA/ANKAR"
             country: "TR"
+            state: "CA"
             zipCode: "06700"
 
           billingInfo:
@@ -1369,6 +1370,7 @@ components:
             address1: "GOLGELI SOKAK NO.34, 06700"
             city: "GAZIOSMANPASA/ANKAR"
             country: "TR"
+            state: "CA"
             zipCode: "06700"
 
       allOf:
@@ -4058,9 +4060,9 @@ components:
           example: "高新区"
         state:
           type: string
-          description: 收货地址所在州。**送货到加拿大、美国、英国、澳大利亚时必填**
+          description: 收货地址所在州。ISO3166-2中定义的州或省代码。例如，美国的CA或加拿大的ON。
           maxLength: 32
-          example: "California"
+          example: "CA"
         country:
           type: string
           description: 收货地址所在国家（ISO 3166-1 alpha-2 两位代码）
@@ -4134,9 +4136,9 @@ components:
           example: "高新区"
         state:
           type: string
-          description: 账单地址所在州。**送货到加拿大、美国、英国、澳大利亚时需要上送**
+          description: 账单地址所在州。ISO3166-2中定义的州或省代码。例如，美国的CA或加拿大的ON。
           maxLength: 32
-          example: "California"
+          example: "CA"
         country:
           type: string
           description: 账单地址所在国家（ISO 3166-1 alpha-2 两位代码）
