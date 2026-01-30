@@ -4002,7 +4002,7 @@ components:
 
     ShippingInfo:
       type: object
-      description: 邮寄信息。<span style="color:red">电商场景下需要上送。如果传入该对象，则内层必填字段必须传入</span>
+      description: 邮寄信息。<span style="color:red">国际卡支付必传</span>
       required:
         - firstName
         - lastName
@@ -4060,7 +4060,7 @@ components:
           example: "高新区"
         state:
           type: string
-          description: 收货地址所在州。ISO3166-2中定义的州或省代码。例如，美国的CA或加拿大的ON。
+          description: ISO 3166-2中定义的州或省代码。例如，美国的CA或加拿大的ON。<span style="color:red">美国和加拿大必传。</span>
           maxLength: 32
           example: "CA"
         country:
@@ -4079,7 +4079,7 @@ components:
     # =========================================================
     BillingInfo:
       type: object
-      description: 信用卡账单信息。<span style="color:red">电商场景下需要上送。如果传入该对象，则内层必填字段必须传入</span>
+      description: 信用卡账单信息。<span style="color:red">国际卡支付必传</span>
       required:
         - email
         - address1
@@ -4136,7 +4136,7 @@ components:
           example: "高新区"
         state:
           type: string
-          description: 账单地址所在州。ISO3166-2中定义的州或省代码。例如，美国的CA或加拿大的ON。
+          description: 账单地址所在州。ISO 3166-2中定义的州或省代码。例如，美国的CA或加拿大的ON。<span style="color:red">美国和加拿大必传。</span>
           maxLength: 32
           example: "CA"
         country:
