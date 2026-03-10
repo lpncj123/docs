@@ -1137,6 +1137,52 @@ components:
           transTimeout: 20
           redirectUrl: "https://dash.proxy302.com/charge"
           notifyUrl: "https://dash-api.proxy302.com/api/webhook/chinagpay_alipay"
+
+          dcc: dcc
+          customerIp: 18.277.26.154
+          goods:
+            - referenceGoodsId: M1006
+              goodsName: 单品惠-6
+              goodsCategory: '1001'
+              goodsQuantity: '100'
+              goodsUnitAmount: 
+                currency: php
+                value: '100.01'
+          goodsInfo: 商品信息描述
+          subMerchantId: '2258484869050'
+          reqReserved: reqReserved
+          reserved: reserved
+          payMethodInfo:
+            cardNo: 444433******1111
+            expirationMonth: '01'
+            expirationYear: '2026'
+            cvv: '123'
+            firstName: Bren
+            lastName: Qiu
+            phone: '18817536699'
+
+          shippingInfo:
+            firstName: "James"
+            lastName: "Smith"
+            phoneNo: "903124360628"
+            email: "James@example.com"
+            address1: "GOLGELI SOKAK NO.34, 06700"
+            city: "GAZIOSMANPASA/ANKAR"
+            country: "TR"
+            state: "CA"
+            zipCode: "06700"
+
+          billingInfo:
+            firstName: "James"
+            lastName: "Smith"
+            phoneNo: "903124360628"
+            email: "James@example.com"
+            address1: "GOLGELI SOKAK NO.34, 06700"
+            city: "GAZIOSMANPASA/ANKAR"
+            country: "TR"
+            state: "CA"
+            zipCode: "06700"
+          
       allOf:
         - $ref: '#/components/schemas/APIBaseRequest'
         - type: object
@@ -1185,6 +1231,7 @@ components:
                 - QRPH
                 - BANK_TRANSFER
                 - KOREAN_CARDS
+                - "CARD: 国际卡支付"
               description: 支付渠道，详见[支付渠道列表](https://docs.payallglobal.com/developers/start/payMethod)
             transTimeout:
               type: number
@@ -1238,6 +1285,7 @@ components:
                 - H5
                 - 3D
                 - FIXEDCODE
+                - API（国际卡API支付）
               description: |
                 交易类型
               default: QRCODE
@@ -1253,6 +1301,51 @@ components:
               description: 商户所在地区
               examples:
                 - US
+
+            dcc:
+              type: string
+              description: 交易是否走DCC 传送：dcc
+              examples:
+                - dcc
+            customerIp:
+              type: string
+              description: 用户ip。<span style="color:red">国际卡支付必传</span>
+              examples:
+                - 18.277.26.154,
+            goods:
+              type: array
+              items:
+                $ref: '#/components/schemas/Goods'
+            goodsInfo:
+              type: string
+              description: 商品信息
+              examples:
+                - 商品信息描述
+            subMerchantId:
+              description: 商户子商户号
+              type: string
+              examples:
+                - '20230424141154'
+            reqReserved:
+              type: string
+              description: 商户备注扩展字段
+              examples:
+                - 备注扩展
+            reserved:
+              type: string
+              description: 备注字段
+              examples:
+                - 测试
+            payMethodInfo:
+              type: object
+              description: 卡信息。<span style="color:red">国际卡支付必传</span>
+              $ref: '#/components/schemas/PayMethodInfo'
+            shippingInfo:
+              $ref: '#/components/schemas/ShippingInfo'
+            billingInfo:
+              $ref: '#/components/schemas/BillingInfo'
+            
+            
 
           required:
             - transChannel
@@ -1746,6 +1839,7 @@ components:
             - INQUIRYREGISTRATIONSTATUS
             - AUTHORIZE
             - CASHIER_PAY
+            - "CARD: 国际卡支付"
           description: 交易类型
           default: PAY
         accessType:
