@@ -993,7 +993,7 @@ components:
                 - USD
             transAmt:
               type: string
-              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110【创建token快捷支付时，金额为0代表只创建令牌，非0代表创建令牌并支付】
+              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110
               examples:
                 - '20.01'
             goodsName:
@@ -1250,7 +1250,7 @@ components:
                 - USD
             transAmt:
               type: string
-              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110【创建token快捷支付时，金额为0代表只创建令牌，非0代表创建令牌并支付】
+              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110
               examples:
                 - '20.01'
             goodsName:
@@ -1507,7 +1507,7 @@ components:
                 - "OVO: OVO"
                 - "DOKU: DOKU"
                 - "Dragonpay: Dragonpay"
-                - "Konbini: 便利店支付"
+                - "Konbini: Konbini"
                 - "PayEasy: PayEasy"
                 - "GrabPay: GrabPay"
                 - "PAYCO: PAYCO"
@@ -1542,7 +1542,7 @@ components:
                 - USD
             transAmt:
               type: string
-              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110【创建token快捷支付时，金额为0代表只创建令牌，非0代表创建令牌并支付】
+              description: 订单金额 请按照4217币种的最小单位传递 eg.(CNY) 110.86  (JPY) 1110
               examples:
                 - '20.01'
             goodsName:
@@ -1674,6 +1674,7 @@ components:
             - merchantOrderId
             - merchantOrderTime
             - merchantRegion
+            - goods
       x-User: null
     PayBaseRequest:
       type: object
@@ -2186,7 +2187,15 @@ components:
               description: "金额\t"
               examples:
                 - '100.01'
-          
+          required: 
+            - currency
+            - value
+      required: 
+        - referenceGoodsId
+        - goodsName
+        - goodsCategory
+        - goodsQuantity
+        - goodsUnitAmount    
       x-examples:
         Example 1:
           referenceGoodsId: string
